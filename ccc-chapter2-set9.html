@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCC Chapter 2 – MCQ Practice</title>
+<style>
+body{
+ margin:0;
+ font-family:Segoe UI,Arial,sans-serif;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ min-height:100vh;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+}
+.app{
+ width:100%;
+ max-width:420px;
+ background:#fff;
+ border-radius:18px;
+ box-shadow:0 15px 40px rgba(0,0,0,.25);
+ overflow:hidden;
+}
+.header{
+ padding:16px;
+ background:linear-gradient(135deg,#ff9800,#ff5722);
+ color:#fff;
+ font-weight:600;
+ text-align:center;
+}
+.progress{
+ height:6px;
+ background:#eee;
+}
+.progress-bar{
+ height:6px;
+ width:0%;
+ background:linear-gradient(90deg,#4caf50,#8bc34a);
+ transition:.3s;
+}
+.card{
+ padding:18px;
+}
+.qno{
+ font-size:14px;
+ color:#666;
+ margin-bottom:8px;
+}
+.question{
+ font-size:16px;
+ font-weight:600;
+ margin-bottom:14px;
+}
+.option{
+ background:#f3f4f6;
+ border-radius:10px;
+ padding:12px;
+ margin-bottom:10px;
+ cursor:pointer;
+ transition:.2s;
+}
+.option:hover{background:#e5e7eb}
+.option.correct{
+ background:#4caf50;
+ color:#fff;
+}
+.option.wrong{
+ background:#f44336;
+ color:#fff;
+}
+.option.disabled{
+ pointer-events:none;
+ opacity:.9;
+}
+.btn{
+ width:100%;
+ padding:12px;
+ border:none;
+ border-radius:12px;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ color:#fff;
+ font-size:16px;
+ font-weight:600;
+ cursor:pointer;
+}
+.btn:disabled{opacity:.6}
+.result{
+ padding:20px;
+ display:none;
+}
+.res-card{
+ padding:12px;
+ border-radius:12px;
+ margin-bottom:10px;
+ color:#fff;
+ font-weight:600;
+}
+.green{background:#4caf50}
+.red{background:#f44336}
+.purple{background:#673ab7}
+</style>
+</head>
+<body>
+<div class="app">
+ <div class="header">CCC Chapter 2 – MCQ Set 9</div>
+ <div class="progress"><div class="progress-bar" id="bar"></div></div>
+ <div class="card" id="quiz">
+  <div class="qno" id="qno"></div>
+  <div class="question" id="question"></div>
+  <div id="options"></div>
+  <button class="btn" id="next" onclick="nextQ()" disabled>Next</button>
+ </div>
+ <div class="result" id="result"></div>
+</div>
+
+<script>
+/* ===== SET 9 : Questions 1–100 (Chapter 2 – Operating System) ===== */
+ 
+const questions = [
+ {type:'mcq',q:'Which OS kernel mode allows direct hardware access?<br>कौन सा OS कर्नल मोड डायरेक्ट हार्डवेयर एक्सेस की अनुमति देता है?',o:['Kernel Mode / कर्नल मोड','User Mode / यूजर मोड','Protected Mode / प्रोटेक्टेड मोड','Virtual Mode / वर्चुअल मोड'],a:0},
+ {type:'mcq',q:'Which OS component manages low-level process scheduling?<br>कौन सा OS घटक लो-लेवल प्रोसेस शेड्यूलिंग प्रबंधित करता है?',o:['Scheduler / शेड्यूलर','Task Manager / टास्क मैनेजर','Dispatcher / डिस्पैचर','Kernel / कर्नल'],a:0},
+ {type:'mcq',q:'Which OS scheduling algorithm minimizes CPU waiting time for mixed workloads?<br>मिश्रित वर्कलोड के लिए CPU प्रतीक्षा समय को कम करने वाला OS शेड्यूलिंग एल्गोरिथम कौन सा है?',o:['Multilevel Feedback Queue / मल्टीलेवल फीडबैक क्यू','Round Robin / राउंड रॉबिन','Shortest Job First / शॉर्टेस्ट जॉब फर्स्ट','Priority Scheduling / प्रायोरिटी शेड्यूलिंग'],a:0},
+ {type:'mcq',q:'Which OS memory management technique allows dynamic allocation?<br>डायनामिक अलोकेशन की अनुमति देने वाली OS मेमोरी मैनेजमेंट तकनीक कौन सी है?',o:['Paging / पेजिंग','Segmentation / सेगमेंटेशन','Static Partitioning / स्टैटिक पार्टिशनिंग','Virtual Memory / वर्चुअल मेमोरी'],a:0},
+ {type:'tf',q:'Segmentation in OS improves memory utilization for variable-sized processes.<br>OS में सेगमेंटेशन वेरिएबल-साइज प्रोसेस के लिए मेमोरी उपयोगिता बढ़ाती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature handles deadlock prevention?<br>कौन सा OS फीचर डेडलॉक प्रिवेंशन को संभालता है?',o:['Deadlock Manager / डेडलॉक मैनेजर','Task Scheduler / टास्क शेड्यूलर','Resource Allocator / रिसोर्स अलोकेटर','Kernel / कर्नल'],a:0},
+ {type:'mcq',q:'Which OS method avoids circular wait for resources?<br>संसाधनों के लिए सर्कुलर वेट को रोकने वाली OS विधि कौन सी है?',o:['Resource Hierarchy / रिसोर्स हायार्की','Banker\'s Algorithm / बैंकर्स एल्गोरिथम','Mutex / म्यूटेक्स','Semaphore / सेमाफोर'],a:0},
+ {type:'mcq',q:'Which OS synchronization primitive ensures mutual exclusion?<br>कौन सा OS सिंक्रोनाइजेशन प्रिमिटिव म्यूचुअल एक्सक्लूज़न सुनिश्चित करता है?',o:['Semaphore / सेमाफोर','Mutex / म्यूटेक्स','Spinlock / स्पिनलॉक','Event / इवेंट'],a:0},
+ {type:'mcq',q:'Which OS scheduling strategy prevents starvation in priority scheduling?<br>प्राथमिकता शेड्यूलिंग में स्टार्वेशन को रोकने वाली OS शेड्यूलिंग रणनीति कौन सी है?',o:['Aging / एजिंग','Round Robin / राउंड रॉबिन','Shortest Job First / शॉर्टेस्ट जॉब फर्स्ट','Multilevel Queue / मल्टीलेवल क्यू'],a:0},
+ {type:'tf',q:'Deadlock prevention and aging in OS improve system reliability.<br>OS में डेडलॉक प्रिवेंशन और एजिंग सिस्टम विश्वसनीयता बढ़ाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS virtual memory technique uses page replacement algorithms?<br>कौन सी OS वर्चुअल मेमोरी तकनीक पेज रिप्लेसमेंट एल्गोरिथम का उपयोग करती है?',o:['Demand Paging / डिमांड पेजिंग','Segmentation / सेगमेंटेशन','Static Partitioning / स्टैटिक पार्टिशनिंग','Swapping / स्वैपिंग'],a:0},
+ {type:'mcq',q:'Which page replacement policy minimizes page faults for sequential access?<br>सिक्वेंशियल एक्सेस के लिए पेज फॉल्ट को कम करने वाली पेज रिप्लेसमेंट नीति कौन सी है?',o:['FIFO / फर्स्ट इन फर्स्ट आउट','LRU / लेस्ट रीसेंटली यूज़्ड','Optimal / ऑप्टिमल','Second Chance / सेकंड चांस'],a:0},
+ {type:'mcq',q:'Which OS feature isolates processes in memory protection?<br>मेमोरी प्रोटेक्शन में प्रोसेस को अलग करने वाला OS फीचर कौन सा है?',o:['Memory Management Unit / मेमोरी मैनेजमेंट यूनिट','Kernel / कर्नल','Scheduler / शेड्यूलर','Dispatcher / डिस्पैचर'],a:0},
+ {type:'mcq',q:'Which OS mechanism detects and handles stack overflow?<br>कौन सा OS मैकेनिज़म स्टैक ओवरफ़्लो का पता लगाता और हैंडल करता है?',o:['Stack Guard / स्टैक गार्ड','Memory Manager / मेमोरी मैनेजर','Task Scheduler / टास्क शेड्यूलर','Exception Handler / एक्सेप्शन हैंडलर'],a:0},
+ {type:'tf',q:'Virtual memory with paging and swapping increases CPU utilization and system performance.<br>पेजिंग और स्वैपिंग के साथ वर्चुअल मेमोरी CPU उपयोग और सिस्टम प्रदर्शन बढ़ाती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature provides I/O buffering to improve throughput?<br>थ्रूपुट बढ़ाने के लिए I/O बफ़रिंग प्रदान करने वाला OS फीचर कौन सा है?',o:['I/O Manager / I/O मैनेजर','Device Driver / डिवाइस ड्राइवर','Scheduler / शेड्यूलर','Interrupt Handler / इंटरप्ट हैंडलर'],a:0},
+ {type:'mcq',q:'Which OS option uses DMA for high-speed data transfer?<br>उच्च गति डेटा ट्रांसफर के लिए कौन सा OS विकल्प DMA का उपयोग करता है?',o:['Direct Memory Access / डायरेक्ट मेमोरी एक्सेस','I/O Manager / I/O मैनेजर','Device Driver / डिवाइस ड्राइवर','Interrupt Handler / इंटरप्ट हैंडलर'],a:0},
+ {type:'mcq',q:'Which OS mechanism handles spooling for printers?<br>प्रिंटर के लिए स्पूलिंग को संभालने वाला OS मैकेनिज़म कौन सा है?',o:['Spooler / स्पूलर','Print Manager / प्रिंट मैनेजर','I/O Manager / I/O मैनेजर','Device Driver / डिवाइस ड्राइवर'],a:0},
+ {type:'mcq',q:'Which OS feature detects I/O device errors and retries operations?<br>I/O डिवाइस त्रुटियों का पता लगाने और ऑपरेशन रीट्राई करने वाला OS फीचर कौन सा है?',o:['Error Detection / एरर डिटेक्शन','Device Driver / डिवाइस ड्राइवर','Interrupt Handler / इंटरप्ट हैंडलर','Scheduler / शेड्यूलर'],a:0},
+ {type:'tf',q:'Proper I/O management with DMA and spooling increases system efficiency.<br>DMA और स्पूलिंग के साथ उचित I/O प्रबंधन सिस्टम दक्षता बढ़ाता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature provides inter-process communication (IPC)?<br>कौन सा OS फीचर इंटर-प्रोसेस कम्युनिकेशन (IPC) प्रदान करता है?',o:['IPC Mechanisms / IPC मैकेनिज़्म','Scheduler / शेड्यूलर','Dispatcher / डिस्पैचर','Kernel / कर्नल'],a:0},
+ {type:'mcq',q:'Which OS option implements message queues for IPC?<br>IPC के लिए मैसेज क्यू को लागू करने वाला OS विकल्प कौन सा है?',o:['Message Queue / मैसेज क्यू','Shared Memory / शेरड मेमोरी','Semaphore / सेमाफोर','Socket / सॉकेट'],a:0},
+ {type:'mcq',q:'Which OS feature ensures synchronization between processes?<br>प्रोसेस के बीच सिंक्रोनाइज़ेशन सुनिश्चित करने वाला OS फीचर कौन सा है?',o:['Semaphore / सेमाफोर','Mutex / म्यूटेक्स','Spinlock / स्पिनलॉक','Event / इवेंट'],a:0},
+ {type:'mcq',q:'Which OS option provides shared memory segments for fast IPC?<br>तेज़ IPC के लिए शेरड मेमोरी सेगमेंट प्रदान करने वाला OS विकल्प कौन सा है?',o:['Shared Memory / शेरड मेमोरी','Message Queue / मैसेज क्यू','Semaphore / सेमाफोर','Socket / सॉकेट'],a:0},
+ {type:'tf',q:'IPC mechanisms like shared memory, message queues, and semaphores enable multitasking communication.<br>शेरड मेमोरी, मैसेज क्यू, और सेमाफोर जैसे IPC मैकेनिज़्म मल्टीटास्किंग कम्युनिकेशन सक्षम करते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages system calls from user programs?<br>यूजर प्रोग्राम से सिस्टम कॉल प्रबंधित करने वाला OS फीचर कौन सा है?',o:['System Call Interface / सिस्टम कॉल इंटरफ़ेस','Kernel / कर्नल','Scheduler / शेड्यूलर','Dispatcher / डिस्पैचर'],a:0},
+ {type:'mcq',q:'Which OS option enforces privilege levels for system calls?<br>सिस्टम कॉल के लिए प्रिविलेज स्तर लागू करने वाला OS विकल्प कौन सा है?',o:['Privilege Enforcement / प्रिविलेज एन्फोर्समेंट','System Call Interface / सिस्टम कॉल इंटरफ़ेस','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature handles exceptions during system call execution?<br>सिस्टम कॉल निष्पादन के दौरान एक्सेप्शन को संभालने वाला OS फीचर कौन सा है?',o:['Exception Handler / एक्सेप्शन हैंडलर','System Call Interface / सिस्टम कॉल इंटरफ़ेस','Kernel / कर्नल','Dispatcher / डिस्पैचर'],a:0},
+ {type:'mcq',q:'Which OS option logs system call errors for debugging?<br>डिबगिंग के लिए सिस्टम कॉल त्रुटियों को लॉग करने वाला OS विकल्प कौन सा है?',o:['Event Logs / इवेंट लॉग्स','System Call Interface / सिस्टम कॉल इंटरफ़ेस','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'tf',q:'Proper management of system calls and exception handling ensures OS stability.<br>सिस्टम कॉल और एक्सेप्शन हैंडलिंग का सही प्रबंधन OS स्थिरता सुनिश्चित करता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature isolates user processes to prevent security breaches?<br>सुरक्षा उल्लंघनों को रोकने के लिए यूजर प्रोसेस को अलग करने वाला OS फीचर कौन सा है?',o:['Process Isolation / प्रोसेस आइसोलेशन','Memory Management / मेमोरी मैनेजमेंट','Scheduler / शेड्यूलर','Dispatcher / डिस्पैचर'],a:0},
+ {type:'mcq',q:'Which OS option implements sandboxing for untrusted applications?<br>अनट्रस्टेड एप्लिकेशन के लिए सैंडबॉक्सिंग लागू करने वाला OS विकल्प कौन सा है?',o:['Sandboxing / सैंडबॉक्सिंग','Process Isolation / प्रोसेस आइसोलेशन','Task Manager / टास्क मैनेजर','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS feature controls capabilities and access tokens for processes?<br>प्रोसेस के लिए कैपेबिलिटी और एक्सेस टोकन नियंत्रित करने वाला OS फीचर कौन सा है?',o:['Access Control / एक्सेस कंट्रोल','Process Isolation / प्रोसेस आइसोलेशन','Scheduler / शेड्यूलर','Kernel / कर्नल'],a:0},
+ {type:'mcq',q:'Which OS option enforces mandatory access control (MAC) policies?<br>मैन्डेटरी एक्सेस कंट्रोल (MAC) पॉलिसी लागू करने वाला OS विकल्प कौन सा है?',o:['MAC Settings / MAC सेटिंग्स','Process Isolation / प्रोसेस आइसोलेशन','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Process isolation, sandboxing, and MAC policies enhance OS security against attacks.<br>प्रोसेस आइसोलेशन, सैंडबॉक्सिंग, और MAC पॉलिसी OS सुरक्षा बढ़ाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature provides kernel-level logging for auditing?<br>ऑडिटिंग के लिए कर्नल-लेवल लॉगिंग प्रदान करने वाला OS फीचर कौन सा है?',o:['Kernel Logs / कर्नल लॉग्स','Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर','System Monitor / सिस्टम मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option secures inter-process messages with encryption?<br>इंटर-प्रोसेस मैसेज को एन्क्रिप्शन के साथ सुरक्षित करने वाला OS विकल्प कौन सा है?',o:['Secure IPC / सिक्योर IPC','Message Queue / मैसेज क्यू','Shared Memory / शेरड मेमोरी','Socket / सॉकेट'],a:0},
+ {type:'mcq',q:'Which OS mechanism throttles CPU usage for background processes?<br>बैकग्राउंड प्रोसेस के लिए CPU उपयोग को थ्रॉटल करने वाला OS मैकेनिज़्म कौन सा है?',o:['CPU Throttling / CPU थ्रॉटलिंग','Scheduler / शेड्यूलर','Dispatcher / डिस्पैचर','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature prioritizes real-time tasks over normal tasks?<br>नॉर्मल टास्क के ऊपर रियल-टाइम टास्क को प्राथमिकता देने वाला OS फीचर कौन सा है?',o:['Real-Time Scheduler / रियल-टाइम शेड्यूलर','Priority Queue / प्रायोरिटी क्यू','Round Robin / राउंड रॉबिन','Multilevel Queue / मल्टीलेवल क्यू'],a:0},
+ {type:'tf',q:'CPU throttling and real-time scheduling optimize performance and responsiveness.<br>CPU थ्रॉटलिंग और रियल-टाइम शेड्यूलिंग प्रदर्शन और रिस्पॉन्सिवनेस को ऑप्टिमाइज़ करते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature implements secure boot and firmware validation?<br>सिक्योर बूट और फर्मवेयर वैलिडेशन लागू करने वाला OS फीचर कौन सा है?',o:['Secure Boot / सिक्योर बूट','UEFI Settings / यूईएफआई सेटिंग्स','Kernel / कर्नल','BIOS / BIOS'],a:0},
+ {type:'mcq',q:'Which OS option verifies digital signatures before loading drivers?<br>ड्राइवर लोड करने से पहले डिजिटल सिग्नेचर को सत्यापित करने वाला OS विकल्प कौन सा है?',o:['Driver Signing / ड्राइवर साइनिंग','Secure Boot / सिक्योर बूट','Task Manager / टास्क मैनेजर','Kernel / कर्नल'],a:0},
+ {type:'mcq',q:'Which OS feature prevents unauthorized kernel module loading?<br>अनधिकृत कर्नल मॉड्यूल लोडिंग को रोकने वाला OS फीचर कौन सा है?',o:['Module Protection / मॉड्यूल प्रोटेक्शन','Kernel / कर्नल','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option logs failed driver load attempts for security auditing?<br>सिक्योरिटी ऑडिटिंग के लिए असफल ड्राइवर लोड प्रयासों को लॉग करने वाला OS विकल्प कौन सा है?',o:['Driver Audit / ड्राइवर ऑडिट','Event Viewer / इवेंट व्यूअर','Kernel Logs / कर्नल लॉग्स','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'tf',q:'Secure boot and driver signing protect OS kernel from tampering.<br>सिक्योर बूट और ड्राइवर साइनिंग OS कर्नल को छेड़छाड़ से बचाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS mechanism isolates system services from user mode?<br>यूजर मोड से सिस्टम सर्विस को अलग करने वाला OS मैकेनिज़्म कौन सा है?',o:['Service Isolation / सर्विस आइसोलेशन','Process Isolation / प्रोसेस आइसोलेशन','Kernel / कर्नल','Dispatcher / डिस्पैचर'],a:0},
+ {type:'mcq',q:'Which OS feature enforces integrity levels for critical processes?<br>क्रिटिकल प्रोसेस के लिए इंटीग्रिटी लेवल लागू करने वाला OS फीचर कौन सा है?',o:['Integrity Enforcement / इंटीग्रिटी एन्फोर्समेंट','Access Control / एक्सेस कंट्रोल','Process Isolation / प्रोसेस आइसोलेशन','Kernel / कर्नल'],a:0},
+ {type:'mcq',q:'Which OS option applies sandboxing to isolate browser processes?<br>ब्राउज़र प्रोसेस को अलग करने के लिए सैंडबॉक्सिंग लागू करने वाला OS विकल्प कौन सा है?',o:['Browser Sandboxing / ब्राउज़र सैंडबॉक्सिंग','Service Isolation / सर्विस आइसोलेशन','Task Manager / टास्क मैनेजर','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS feature monitors kernel integrity for rootkit detection?<br>रूटकिट का पता लगाने के लिए कर्नल इंटीग्रिटी की निगरानी करने वाला OS फीचर कौन सा है?',o:['Kernel Integrity Checker / कर्नल इंटीग्रिटी चेकर','Task Manager / टास्क मैनेजर','Event Viewer / इवेंट व्यूअर','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'tf',q:'Process and service isolation with integrity checks prevents kernel-level attacks.<br>इंटीग्रिटी चेक के साथ प्रोसेस और सर्विस आइसोलेशन कर्नल-लेवल अटैक को रोकते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature supports live migration of virtual machines?<br>वर्चुअल मशीनों के लाइव माइग्रेशन का समर्थन करने वाला OS फीचर कौन सा है?',o:['VM Migration / VM माइग्रेशन','Hypervisor / हाइपरवाइज़र','Task Manager / टास्क मैनेजर','Kernel / कर्नल'],a:0},
+ {type:'mcq',q:'Which OS option ensures snapshot consistency for VMs?<br>VM के लिए स्नैपशॉट कंसिस्टेंसी सुनिश्चित करने वाला OS विकल्प कौन सा है?',o:['Snapshot Manager / स्नैपशॉट मैनेजर','VM Migration / VM माइग्रेशन','Hypervisor / हाइपरवाइज़र','Kernel / कर्नल'],a:0},
+ {type:'mcq',q:'Which OS mechanism allocates resources dynamically to VMs?<br>VM को डायनामिक रूप से रिसोर्स अलोकेशन करने वाला OS मैकेनिज़्म कौन सा है?',o:['Dynamic Resource Allocation / डायनामिक रिसोर्स अलोकेशन','VM Scheduler / VM शेड्यूलर','Hypervisor / हाइपरवाइज़र','Kernel / कर्नल'],a:0},
+ {type:'mcq',q:'Which OS feature enforces isolation between host and guest OS?<br>होस्ट और गेस्ट OS के बीच अलगाव लागू करने वाला OS फीचर कौन सा है?',o:['Hypervisor Isolation / हाइपरवाइज़र आइसोलेशन','VM Migration / VM माइग्रेशन','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'tf',q:'VM live migration, snapshot, and isolation enhance virtualization reliability and security.<br>VM लाइव माइग्रेशन, स्नैपशॉट और आइसोलेशन वर्चुअलाइजेशन की विश्वसनीयता और सुरक्षा बढ़ाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature logs network connections for anomaly detection?<br>एनॉमली डिटेक्शन के लिए नेटवर्क कनेक्शन लॉग करने वाला OS फीचर कौन सा है?',o:['Network Logging / नेटवर्क लॉगिंग','Firewall / फ़ायरवॉल','Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option enforces intrusion detection for incoming traffic?<br>इनकमिंग ट्रैफिक के लिए इंट्रूज़न डिटेक्शन लागू करने वाला OS विकल्प कौन सा है?',o:['IDS / IDS','Firewall / फ़ायरवॉल','Network Monitor / नेटवर्क मॉनिटर','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS feature monitors unusual system calls for security?<br>सुरक्षा के लिए असामान्य सिस्टम कॉल की निगरानी करने वाला OS फीचर कौन सा है?',o:['System Call Auditing / सिस्टम कॉल ऑडिटिंग','Kernel Logs / कर्नल लॉग्स','Task Manager / टास्क मैनेजर','Event Viewer / इवेंट व्यूअर'],a:0},
+ {type:'mcq',q:'Which OS option alerts administrators on suspicious process activity?<br>संदिग्ध प्रोसेस गतिविधि पर व्यवस्थापक को अलर्ट देने वाला OS विकल्प कौन सा है?',o:['Process Monitoring / प्रोसेस मॉनिटरिंग','Task Manager / टास्क मैनेजर','Event Viewer / इवेंट व्यूअर','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'tf',q:'Network logging, IDS, and process monitoring are essential for proactive OS security.<br>नेटवर्क लॉगिंग, IDS, और प्रोसेस मॉनिटरिंग प्रॉएक्टिव OS सुरक्षा के लिए आवश्यक हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature enforces CPU quotas for containerized applications?<br>कंटेनराइज्ड एप्लिकेशन के लिए CPU कोटा लागू करने वाला OS फीचर कौन सा है?',o:['Cgroup / Cgroup','Scheduler / शेड्यूलर','Task Manager / टास्क मैनेजर','Kernel / कर्नल'],a:0},
+ {type:'mcq',q:'Which OS option restricts memory usage per container?<br>प्रति कंटेनर मेमोरी उपयोग को प्रतिबंधित करने वाला OS विकल्प कौन सा है?',o:['Memory Limit / मेमोरी लिमिट','Cgroup / Cgroup','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature isolates container namespaces?<br>कंटेनर नेमस्पेस को अलग करने वाला OS फीचर कौन सा है?',o:['Namespace Isolation / नेमस्पेस आइसोलेशन','Cgroup / Cgroup','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option monitors container performance metrics?<br>कंटेनर प्रदर्शन मीट्रिक की निगरानी करने वाला OS विकल्प कौन सा है?',o:['Container Monitor / कंटेनर मॉनिटर','Cgroup / Cgroup','Task Manager / टास्क मैनेजर','Kernel / कर्नल'],a:0},
+ {type:'tf',q:'Cgroups and namespace isolation provide security and resource management for containerized environments.<br>Cgroups और नेमस्पेस आइसोलेशन कंटेनराइज्ड एनवायरनमेंट के लिए सुरक्षा और रिसोर्स मैनेजमेंट प्रदान करते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature implements kernel-level sandboxing for critical processes?<br>क्रिटिकल प्रोसेस के लिए कर्नल-लेवल सैंडबॉक्सिंग लागू करने वाला OS फीचर कौन सा है?',o:['Kernel Sandboxing / कर्नल सैंडबॉक्सिंग','Process Isolation / प्रोसेस आइसोलेशन','Security Settings / सिक्योरिटी सेटिंग्स','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option tracks microservice communication for anomaly detection?<br>एनोमली डिटेक्शन के लिए माइक्रोसर्विस कम्युनिकेशन को ट्रैक करने वाला OS विकल्प कौन सा है?',o:['Microservice Logging / माइक्रोसर्विस लॉगिंग','Event Viewer / इवेंट व्यूअर','System Monitor / सिस्टम मॉनिटर','Kernel Logs / कर्नल लॉग्स'],a:0},
+ {type:'mcq',q:'Which OS feature enforces strict control over kernel modules in enterprise servers?<br>एंटरप्राइज सर्वर में कर्नल मॉड्यूल पर सख्त नियंत्रण लागू करने वाला OS फीचर कौन सा है?',o:['Module Whitelisting / मॉड्यूल व्हाइटलिस्टिंग','Kernel / कर्नल','Task Manager / टास्क मैनेजर','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option monitors CPU microarchitecture vulnerabilities?<br>CPU माइक्रोआर्किटेक्चर कमजोरियों की निगरानी करने वाला OS विकल्प कौन सा है?',o:['Hardware Security Monitor / हार्डवेयर सिक्योरिटी मॉनिटर','Kernel / कर्नल','Task Manager / टास्क मैनेजर','Event Viewer / इवेंट व्यूअर'],a:0},
+ {type:'tf',q:'Kernel sandboxing and hardware security monitoring prevent advanced attacks.<br>कर्नल सैंडबॉक्सिंग और हार्डवेयर सिक्योरिटी मॉनिटरिंग उन्नत अटैक को रोकते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature enables mandatory integrity levels for containers?<br>कंटेनर के लिए अनिवार्य इंटीग्रिटी लेवल सक्षम करने वाला OS फीचर कौन सा है?',o:['Container Integrity / कंटेनर इंटीग्रिटी','Cgroup / Cgroup','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option implements secure inter-container networking?<br>सुरक्षित इंटर-कंटेनर नेटवर्किंग लागू करने वाला OS विकल्प कौन सा है?',o:['Container Network Isolation / कंटेनर नेटवर्क आइसोलेशन','Cgroup / Cgroup','Task Manager / टास्क मैनेजर','Firewall / फ़ायरवॉल'],a:0},
+ {type:'mcq',q:'Which OS feature monitors live system call traces for anomalies?<br>एनोमली के लिए लाइव सिस्टम कॉल ट्रेस की निगरानी करने वाला OS फीचर कौन सा है?',o:['System Call Monitor / सिस्टम कॉल मॉनिटर','Kernel Logs / कर्नल लॉग्स','Task Manager / टास्क मैनेजर','Event Viewer / इवेंट व्यूअर'],a:0},
+ {type:'mcq',q:'Which OS option enforces temporal memory access restrictions?<br>अस्थायी मेमोरी एक्सेस प्रतिबंध लागू करने वाला OS विकल्प कौन सा है?',o:['Memory Access Control / मेमोरी एक्सेस कंट्रोल','Memory Management Unit / मेमोरी मैनेजमेंट यूनिट','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'tf',q:'Temporal memory restrictions and live system call monitoring improve OS attack resistance.<br>अस्थायी मेमोरी प्रतिबंध और लाइव सिस्टम कॉल मॉनिटरिंग OS अटैक प्रतिरोध को बढ़ाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature implements CPU pinning for real-time tasks?<br>रियल-टाइम टास्क के लिए CPU पिनिंग लागू करने वाला OS फीचर कौन सा है?',o:['CPU Pinning / CPU पिनिंग','Scheduler / शेड्यूलर','Task Manager / टास्क मैनेजर','Kernel / कर्नल'],a:0},
+ {type:'mcq',q:'Which OS option enforces memory reservation for critical processes?<br>क्रिटिकल प्रोसेस के लिए मेमोरी रिज़र्वेशन लागू करने वाला OS विकल्प कौन सा है?',o:['Memory Reservation / मेमोरी रिज़र्वेशन','Memory Management Unit / मेमोरी मैनेजमेंट यूनिट','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature tracks hypervisor API calls for security auditing?<br>सिक्योरिटी ऑडिटिंग के लिए हाइपरवाइज़र API कॉल को ट्रैक करने वाला OS फीचर कौन सा है?',o:['Hypervisor Auditing / हाइपरवाइज़र ऑडिटिंग','VM Monitor / VM मॉनिटर','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option restricts guest VM privileges to prevent escapes?<br>एस्केप रोकने के लिए गेस्ट VM प्रिविलेज को सीमित करने वाला OS विकल्प कौन सा है?',o:['Guest VM Isolation / गेस्ट VM आइसोलेशन','Hypervisor / हाइपरवाइज़र','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'tf',q:'CPU pinning, memory reservation, and VM isolation enhance system determinism and security.<br>CPU पिनिंग, मेमोरी रिज़र्वेशन, और VM आइसोलेशन सिस्टम निर्धारण और सुरक्षा बढ़ाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature provides kernel-level anti-tamper mechanisms?<br>कर्नल-लेवल एंटी-टैम्पर मैकेनिज़्म प्रदान करने वाला OS फीचर कौन सा है?',o:['Kernel Protection / कर्नल प्रोटेक्शन','Security Settings / सिक्योरिटी सेटिंग्स','Task Manager / टास्क मैनेजर','Dispatcher / डिस्पैचर'],a:0},
+ {type:'mcq',q:'Which OS option monitors speculative execution vulnerabilities?<br>स्पेसुलैटिव एक्जीक्यूशन कमजोरियों की निगरानी करने वाला OS विकल्प कौन सा है?',o:['Speculative Execution Monitor / स्पेसुलैटिव एक्जीक्यूशन मॉनिटर','Kernel Logs / कर्नल लॉग्स','Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature enforces mandatory auditing of critical system calls?<br>क्रिटिकल सिस्टम कॉल का अनिवार्य ऑडिट लागू करने वाला OS फीचर कौन सा है?',o:['System Call Auditing / सिस्टम कॉल ऑडिटिंग','Kernel / कर्नल','Scheduler / शेड्यूलर','Dispatcher / डिस्पैचर'],a:0},
+ {type:'mcq',q:'Which OS option isolates kernel threads to prevent privilege escalation?<br>प्रिविलेज एस्कलेशन रोकने के लिए कर्नल थ्रेड्स को अलग करने वाला OS विकल्प कौन सा है?',o:['Kernel Thread Isolation / कर्नल थ्रेड आइसोलेशन','Kernel / कर्नल','Task Manager / टास्क मैनेजर','Process Isolation / प्रोसेस आइसोलेशन'],a:0},
+ {type:'tf',q:'Kernel protection, speculative monitoring, and thread isolation strengthen OS defense against attacks.<br>कर्नल प्रोटेक्शन, स्पेसुलैटिव मॉनिटरिंग, और थ्रेड आइसोलेशन OS रक्षा को मजबूत करते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages high-resolution timer interrupts for real-time scheduling?<br>रियल-टाइम शेड्यूलिंग के लिए हाई-रेज़ोल्यूशन टाइमर इंटरप्ट प्रबंधित करने वाला OS फीचर कौन सा है?',o:['High-Resolution Timer / हाई-रेज़ोल्यूशन टाइमर','Scheduler / शेड्यूलर','Kernel / कर्नल','Dispatcher / डिस्पैचर'],a:0},
+ {type:'mcq',q:'Which OS option enforces time slicing with nanosecond precision?<br>नैनोसेकंड प्रिसिजन के साथ टाइम स्लाइसिंग लागू करने वाला OS विकल्प कौन सा है?',o:['Nanosecond Slicing / नैनोसेकंड स्लाइसिंग','Scheduler / शेड्यूलर','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature tracks cache-coherency violations in multi-core CPUs?<br>मल्टी-कोर CPU में कैश-संगतता उल्लंघनों की निगरानी करने वाला OS फीचर कौन सा है?',o:['Cache Monitoring / कैश मॉनिटरिंग','Kernel / कर्नल','Task Manager / टास्क मैनेजर','Memory Management Unit / मेमोरी मैनेजमेंट यूनिट'],a:0},
+ {type:'mcq',q:'Which OS option implements deterministic scheduling for critical applications?<br>क्रिटिकल एप्लिकेशन के लिए निर्णायक शेड्यूलिंग लागू करने वाला OS विकल्प कौन सा है?',o:['Deterministic Scheduler / डेटरमिनिस्टिक शेड्यूलर','Scheduler / शेड्यूलर','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'tf',q:'High-resolution timers, deterministic scheduling, and cache monitoring improve OS precision and reliability.<br>हाई-रेज़ोल्यूशन टाइमर, डेटरमिनिस्टिक शेड्यूलिंग और कैश मॉनिटरिंग OS की सटीकता और विश्वसनीयता बढ़ाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature enforces secure boot chain for firmware integrity?<br>फर्मवेयर इंटीग्रिटी के लिए सिक्योर बूट चेन लागू करने वाला OS फीचर कौन सा है?',o:['Secure Boot Chain / सिक्योर बूट चेन','UEFI / यूईएफआई','Kernel / कर्नल','BIOS / BIOS'],a:0},
+ {type:'mcq',q:'Which OS option verifies TPM measurements at startup?<br>स्टार्टअप पर TPM माप को सत्यापित करने वाला OS विकल्प कौन सा है?',o:['TPM Verification / TPM वेरिफिकेशन','Secure Boot / सिक्योर बूट','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature isolates firmware update process to prevent tampering?<br>छेड़छाड़ रोकने के लिए फर्मवेयर अपडेट प्रोसेस को अलग करने वाला OS फीचर कौन सा है?',o:['Firmware Isolation / फर्मवेयर आइसोलेशन','Secure Boot / सिक्योर बूट','Kernel / कर्नल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option audits boot sequence changes for security?<br>सुरक्षा के लिए बूट अनुक्रम परिवर्तन का ऑडिट करने वाला OS विकल्प कौन सा है?',o:['Boot Audit / बूट ऑडिट','Secure Boot / सिक्योर बूट','Event Viewer / इवेंट व्यूअर','Kernel Logs / कर्नल लॉग्स'],a:0},
+ {type:'tf',q:'Secure boot chain, TPM verification, and firmware isolation protect system integrity from attacks.<br>सिक्योर बूट चेन, TPM वेरिफिकेशन और फर्मवेयर आइसोलेशन सिस्टम इंटीग्रिटी को अटैक से बचाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature enforces atomic updates to system configuration files?<br>सिस्टम कॉन्फ़िगरेशन फ़ाइलों के लिए एटॉमिक अपडेट लागू करने वाला OS फीचर कौन सा है?',o:['Atomic Configuration Updates / एटॉमिक कॉन्फ़िगरेशन अपडेट','Kernel / कर्नल','Task Manager / टास्क मैनेजर','Event Viewer / इवेंट व्यूअर'],a:0},
+ {type:'mcq',q:'Which OS option monitors speculative branch execution to prevent side-channel attacks?<br>साइड-चैनल अटैक रोकने के लिए स्पेसुलैटिव ब्रांच एक्जीक्यूशन की निगरानी करने वाला OS विकल्प कौन सा है?',o:['Speculative Branch Monitor / स्पेसुलैटिव ब्रांच मॉनिटर','Kernel Logs / कर्नल लॉग्स','Task Manager / टास्क मैनेजर','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS feature validates cryptographic keys before usage?<br>उपयोग से पहले क्रिप्टोग्राफिक कीज़ को वैलिडेट करने वाला OS फीचर कौन सा है?',o:['Key Validation / की वैलिडेशन','Kernel / कर्नल','Task Manager / टास्क मैनेजर','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option enforces rollback prevention for critical system updates?<br>क्रिटिकल सिस्टम अपडेट के लिए रोलबैक रोकथाम लागू करने वाला OS विकल्प कौन सा है?',o:['Update Protection / अपडेट प्रोटेक्शन','Kernel / कर्नल','Task Manager / टास्क मैनेजर','Event Viewer / इवेंट व्यूअर'],a:0},
+ {type:'tf',q:'Atomic updates, key validation, and rollback prevention ensure maximum OS integrity and security.<br>एटॉमिक अपडेट, की वैलिडेशन और रोलबैक रोकथाम OS की अधिकतम इंटीग्रिटी और सुरक्षा सुनिश्चित करते हैं।',o:['True / सही','False / गलत'],a:0}
+
+];
+
+
+let index=0;
+let correct=0;
+let wrong=0;
+let attempted=false;
+const qno=document.getElementById('qno');
+const question=document.getElementById('question');
+const options=document.getElementById('options');
+const nextBtn=document.getElementById('next');
+const bar=document.getElementById('bar');
+const quiz=document.getElementById('quiz');
+const result=document.getElementById('result');
+
+function loadQ(){
+ attempted=false;
+ nextBtn.disabled=true;
+ options.innerHTML='';
+ const q=questions[index];
+ qno.innerText=`Question ${index+1} of ${questions.length}`;
+ question.innerHTML=q.q; // HTML used for line break
+ q.o.forEach((op,i)=>{
+  const div=document.createElement('div');
+  div.className='option';
+  div.innerText=op;
+  div.onclick=()=>select(div,i);
+  options.appendChild(div);
+ });
+ bar.style.width=((index)/questions.length*100)+'%';
+}
+
+function select(el,i){
+ if(attempted) return;
+ attempted=true;
+ const q=questions[index];
+ const ops=document.querySelectorAll('.option');
+ ops.forEach(o=>o.classList.add('disabled'));
+ if(i===q.a){
+  el.classList.add('correct');
+  correct++;
+ }else{
+  el.classList.add('wrong');
+  ops[q.a].classList.add('correct');
+  wrong++;
+ }
+ nextBtn.disabled=false;
+}
+
+function nextQ(){
+ index++;
+ if(index<questions.length){
+  loadQ();
+ }else{
+  showResult();
+ }
+}
+
+function showResult(){
+ quiz.style.display='none';
+ bar.style.width='100%';
+ result.style.display='block';
+ const total=questions.length;
+ const score=Math.round((correct/total)*100);
+ result.innerHTML=`
+  <div class="res-card green">Correct : ${correct}</div>
+  <div class="res-card red">Wrong : ${wrong}</div>
+  <div class="res-card purple">Score : ${score}%</div>
+ `;
+}
+
+loadQ();
+</script>
+</body>
+</html>
