@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCC Chapter 2 – MCQ Practice</title>
+<style>
+body{
+ margin:0;
+ font-family:Segoe UI,Arial,sans-serif;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ min-height:100vh;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+}
+.app{
+ width:100%;
+ max-width:420px;
+ background:#fff;
+ border-radius:18px;
+ box-shadow:0 15px 40px rgba(0,0,0,.25);
+ overflow:hidden;
+}
+.header{
+ padding:16px;
+ background:linear-gradient(135deg,#ff9800,#ff5722);
+ color:#fff;
+ font-weight:600;
+ text-align:center;
+}
+.progress{
+ height:6px;
+ background:#eee;
+}
+.progress-bar{
+ height:6px;
+ width:0%;
+ background:linear-gradient(90deg,#4caf50,#8bc34a);
+ transition:.3s;
+}
+.card{
+ padding:18px;
+}
+.qno{
+ font-size:14px;
+ color:#666;
+ margin-bottom:8px;
+}
+.question{
+ font-size:16px;
+ font-weight:600;
+ margin-bottom:14px;
+}
+.option{
+ background:#f3f4f6;
+ border-radius:10px;
+ padding:12px;
+ margin-bottom:10px;
+ cursor:pointer;
+ transition:.2s;
+}
+.option:hover{background:#e5e7eb}
+.option.correct{
+ background:#4caf50;
+ color:#fff;
+}
+.option.wrong{
+ background:#f44336;
+ color:#fff;
+}
+.option.disabled{
+ pointer-events:none;
+ opacity:.9;
+}
+.btn{
+ width:100%;
+ padding:12px;
+ border:none;
+ border-radius:12px;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ color:#fff;
+ font-size:16px;
+ font-weight:600;
+ cursor:pointer;
+}
+.btn:disabled{opacity:.6}
+.result{
+ padding:20px;
+ display:none;
+}
+.res-card{
+ padding:12px;
+ border-radius:12px;
+ margin-bottom:10px;
+ color:#fff;
+ font-weight:600;
+}
+.green{background:#4caf50}
+.red{background:#f44336}
+.purple{background:#673ab7}
+</style>
+</head>
+<body>
+<div class="app">
+ <div class="header">CCC Chapter 2 – MCQ Set 8</div>
+ <div class="progress"><div class="progress-bar" id="bar"></div></div>
+ <div class="card" id="quiz">
+  <div class="qno" id="qno"></div>
+  <div class="question" id="question"></div>
+  <div id="options"></div>
+  <button class="btn" id="next" onclick="nextQ()" disabled>Next</button>
+ </div>
+ <div class="result" id="result"></div>
+</div>
+
+<script>
+/* ===== SET 8 : Questions 1–100 (Chapter 2 – Operating System) ===== */
+ 
+const questions = [
+ {type:'mcq',q:'Which OS feature manages virtualization settings for running multiple OS?<br>एक साथ कई OS चलाने के लिए वर्चुअलाइजेशन सेटिंग प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Hyper-V / हाइपर-वी','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option configures nested virtualization?<br>नेस्टेड वर्चुअलाइजेशन कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Virtualization Settings / वर्चुअलाइजेशन सेटिंग्स','Task Scheduler / टास्क शेड्यूलर','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature isolates system processes for security?<br>सुरक्षा के लिए सिस्टम प्रोसेस को अलग करने वाला OS फीचर कौन सा है?',o:['Sandbox / सैंडबॉक्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Device Manager / डिवाइस मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option enforces mandatory access control policies?<br>मैंडेटरी एक्सेस कंट्रोल पॉलिसी लागू करने का OS विकल्प कौन सा है?',o:['Security Policy / सिक्योरिटी पॉलिसी','User Accounts / यूजर अकाउंट्स','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'tf',q:'Virtualization enhances security and resource utilization simultaneously.<br>वर्चुअलाइजेशन सुरक्षा और संसाधन उपयोग को एक साथ बढ़ाता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages kernel-level debugging?<br>कर्नेल-लेवल डिबगिंग प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Kernel Debugger / कर्नेल डिबगर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option traces system calls for analysis?<br>विश्लेषण के लिए सिस्टम कॉल ट्रेस करने का OS विकल्प कौन सा है?',o:['Event Tracing / इवेंट ट्रेसिंग','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS feature manages advanced group policies?<br>एडवांस ग्रुप पॉलिसी प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Group Policy Editor / ग्रुप पॉलिसी एडिटर','User Accounts / यूजर अकाउंट्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option configures BitLocker encryption settings?<br>बिटलॉकर एन्क्रिप्शन सेटिंग कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['BitLocker Management / बिटलॉकर मैनेजमेंट','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'tf',q:'Kernel debugging and event tracing require administrative privileges.<br>कर्नेल डिबगिंग और इवेंट ट्रेसिंग के लिए एडमिनिस्ट्रेटिव प्रिविलेज़ आवश्यक हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages secure boot configuration?<br>सिक्योर बूट कॉन्फ़िगरेशन प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Secure Boot Settings / सिक्योर बूट सेटिंग्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','UEFI Firmware / यूईएफआई फर्मवेयर'],a:0},
+ {type:'mcq',q:'Which OS option enforces driver signature verification?<br>ड्राइवर सिग्नेचर सत्यापन लागू करने का OS विकल्प कौन सा है?',o:['Driver Signature Enforcement / ड्राइवर सिग्नेचर एन्फोर्समेंट','Device Manager / डिवाइस मैनेजर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature protects memory from malicious code?<br>मैलिशियस कोड से मेमोरी सुरक्षा करने वाला OS फीचर कौन सा है?',o:['Data Execution Prevention / डेटा एक्जिक्यूशन प्रिवेंशन','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option restricts kernel module loading?<br>कर्नेल मॉड्यूल लोडिंग को प्रतिबंधित करने का OS विकल्प कौन सा है?',o:['Kernel Module Signing / कर्नेल मॉड्यूल साइनिंग','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'tf',q:'Secure boot and DEP help prevent malware from running during system startup.<br>सिक्योर बूट और DEP सिस्टम स्टार्टअप के दौरान मैलवेयर को चलने से रोकने में मदद करते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages virtualization network adapters?<br>वर्चुअलाइजेशन नेटवर्क एडाप्टर प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Virtual Network Manager / वर्चुअल नेटवर्क मैनेजर','Network Settings / नेटवर्क सेटिंग्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option limits memory usage for virtual machines?<br>वर्चुअल मशीन के लिए मेमोरी उपयोग सीमित करने का OS विकल्प कौन सा है?',o:['VM Memory Settings / वीएम मेमोरी सेटिंग्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS feature manages snapshot and restore of virtual machines?<br>वर्चुअल मशीन के स्नैपशॉट और रिस्टोर प्रबंधित करने वाला OS फीचर कौन सा है?',o:['VM Snapshot / वीएम स्नैपशॉट','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Hyper-V / हाइपर-वी'],a:0},
+ {type:'mcq',q:'Which OS option isolates virtual machines from host OS?<br>वर्चुअल मशीन को होस्ट OS से अलग करने का OS विकल्प कौन सा है?',o:['Sandboxing / सैंडबॉक्सिंग','Task Manager / टास्क मैनेजर','Hyper-V / हाइपर-वी','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Proper virtualization configuration prevents resource conflicts and improves security.<br>सही वर्चुअलाइजेशन कॉन्फ़िगरेशन संसाधन संघर्ष को रोकता है और सुरक्षा बढ़ाता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature allows advanced registry editing?<br>एडवांस रजिस्ट्री एडिटिंग की अनुमति देने वाला OS फीचर कौन सा है?',o:['Registry Editor / रजिस्ट्री एडिटर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option configures auditing of registry changes?<br>रजिस्ट्री बदलाव का ऑडिट कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Audit Policy / ऑडिट पॉलिसी','Registry Editor / रजिस्ट्री एडिटर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature manages advanced event log subscriptions?<br>एडवांस इवेंट लॉग सब्सक्रिप्शन प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Event Log Subscription / इवेंट लॉग सब्सक्रिप्शन','Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option allows exporting and importing event logs?<br>इवेंट लॉग को एक्सपोर्ट और इम्पोर्ट करने की अनुमति देने वाला OS विकल्प कौन सा है?',o:['Event Log Management / इवेंट लॉग मैनेजमेंट','Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Advanced registry and event log management is essential for enterprise-level OS administration.<br>एडवांस रजिस्ट्री और इवेंट लॉग प्रबंधन एंटरप्राइज-लेवल OS एडमिनिस्ट्रेशन के लिए आवश्यक है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature configures kernel debugging over network?<br>नेटवर्क के माध्यम से कर्नेल डिबगिंग कॉन्फ़िगर करने वाला OS फीचर कौन सा है?',o:['Remote Kernel Debug / रिमोट कर्नेल डिबग','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option allows secure remote administration?<br>सुरक्षित रिमोट एडमिनिस्ट्रेशन की अनुमति देने का OS विकल्प कौन सा है?',o:['Remote Management / रिमोट मैनेजमेंट','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS feature isolates services to prevent privilege escalation?<br>प्रिविलेज एस्केलेशन रोकने के लिए सर्विसेज़ को अलग करने वाला OS फीचर कौन सा है?',o:['Service Isolation / सर्विस आइसोलेशन','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option enforces signed drivers only policy?<br>सिर्फ साइन किए गए ड्राइवर की नीति लागू करने का OS विकल्प कौन सा है?',o:['Driver Signing Policy / ड्राइवर साइनिंग पॉलिसी','Device Manager / डिवाइस मैनेजर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Service isolation and signed driver enforcement enhance kernel security.<br>सर्विस आइसोलेशन और साइन किए गए ड्राइवर लागू करना कर्नेल सुरक्षा बढ़ाता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature configures CPU throttling to prevent overheating?<br>CPU ओवरहीटिंग रोकने के लिए थ्रॉटलिंग कॉन्फ़िगर करने वाला OS फीचर कौन सा है?',o:['Power Management / पावर मैनेजमेंट','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option monitors hardware temperature sensors?<br>हार्डवेयर तापमान सेंसर की निगरानी करने का OS विकल्प कौन सा है?',o:['Hardware Monitor / हार्डवेयर मॉनिटर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS feature manages firmware updates for system devices?<br>सिस्टम डिवाइस के लिए फर्मवेयर अपडेट प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Device Firmware Update / डिवाइस फर्मवेयर अपडेट','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Windows Update / विंडोज़ अपडेट'],a:0},
+ {type:'mcq',q:'Which OS option configures alert thresholds for disk health?<br>डिस्क हेल्थ के लिए अलर्ट थ्रेशोल्ड कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Storage Health Settings / स्टोरेज हेल्थ सेटिंग्स','Disk Cleanup / डिस्क क्लीनअप','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Monitoring hardware and disk health reduces risk of system failure.<br>हार्डवेयर और डिस्क हेल्थ की निगरानी सिस्टम फेलियर के जोखिम को कम करती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature allows advanced task scheduling with dependencies?<br>डिपेंडेंसी के साथ एडवांस टास्क शेड्यूलिंग की अनुमति देने वाला OS फीचर कौन सा है?',o:['Task Scheduler / टास्क शेड्यूलर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option configures high-priority task execution?<br>उच्च-प्राथमिकता वाले टास्क निष्पादन को कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Priority Settings / प्रायोरिटी सेटिंग्स','Task Scheduler / टास्क शेड्यूलर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature logs failed scheduled tasks for analysis?<br>विश्लेषण के लिए विफल शेड्यूल टास्क लॉग करने वाला OS फीचर कौन सा है?',o:['Task History / टास्क हिस्ट्री','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Event Viewer / इवेंट व्यूअर'],a:0},
+ {type:'mcq',q:'Which OS option configures email alerts for task completion?<br>टास्क पूरा होने पर ईमेल अलर्ट कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Notification Settings / नोटिफिकेशन सेटिंग्स','Task Scheduler / टास्क शेड्यूलर','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'tf',q:'Advanced task scheduling improves resource utilization and automation.<br>एडवांस टास्क शेड्यूलिंग संसाधन उपयोग और ऑटोमेशन को बेहतर बनाती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages system image backups?<br>सिस्टम इमेज बैकअप प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Backup and Restore / बैकअप और रिस्टोर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Windows Update / विंडोज़ अपडेट'],a:0},
+ {type:'mcq',q:'Which OS option restores the system image to a new disk?<br>नए डिस्क पर सिस्टम इमेज रिस्टोर करने का OS विकल्प कौन सा है?',o:['System Image Restore / सिस्टम इमेज रिस्टोर','Backup / बैकअप','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature supports incremental backups?<br>इंक्रिमेंटल बैकअप का समर्थन करने वाला OS फीचर कौन सा है?',o:['Backup Settings / बैकअप सेटिंग्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Windows Update / विंडोज़ अपडेट'],a:0},
+ {type:'mcq',q:'Which OS option encrypts backup images for security?<br>सुरक्षा के लिए बैकअप इमेज को एन्क्रिप्ट करने का OS विकल्प कौन सा है?',o:['Backup Encryption / बैकअप एन्क्रिप्शन','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'tf',q:'System image backups protect against hardware failure and data loss.<br>सिस्टम इमेज बैकअप हार्डवेयर फेलियर और डेटा हानि से सुरक्षा करते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages driver update rollbacks?<br>ड्राइवर अपडेट रोलबैक प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Device Manager / डिवाइस मैनेजर','Windows Update / विंडोज़ अपडेट','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option blocks unsigned driver installation?<br>अनसाइन किए गए ड्राइवर इंस्टॉलेशन को ब्लॉक करने का OS विकल्प कौन सा है?',o:['Driver Signature Enforcement / ड्राइवर सिग्नेचर एन्फोर्समेंट','Device Manager / डिवाइस मैनेजर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature provides detailed boot diagnostics?<br>विस्तृत बूट डायग्नोस्टिक्स प्रदान करने वाला OS फीचर कौन सा है?',o:['Boot Diagnostics / बूट डायग्नोस्टिक्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option configures startup repair tools?<br>स्टार्टअप रिपेयर टूल कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Startup Repair / स्टार्टअप रिपेयर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Windows Recovery / विंडोज़ रिकवरी'],a:0},
+ {type:'tf',q:'Managing drivers and startup diagnostics ensures system stability.<br>ड्राइवर और स्टार्टअप डायग्नोस्टिक्स का प्रबंधन सिस्टम स्थिरता सुनिश्चित करता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature monitors system resource contention?<br>सिस्टम संसाधन टकराव की निगरानी करने वाला OS फीचर कौन सा है?',o:['Resource Monitor / रिसोर्स मॉनिटर','Task Manager / टास्क मैनेजर','Performance Monitor / परफॉरमेंस मॉनिटर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option prioritizes critical processes during high load?<br>उच्च लोड के दौरान महत्वपूर्ण प्रोसेस को प्राथमिकता देने का OS विकल्प कौन सा है?',o:['Process Priority / प्रोसेस प्रायोरिटी','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS feature detects memory leaks for optimization?<br>संसाधन अनुकूलन के लिए मेमोरी लीक का पता लगाने वाला OS फीचर कौन सा है?',o:['Memory Diagnostics / मेमोरी डायग्नोस्टिक्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option limits CPU usage per process to prevent bottleneck?<br>बॉटलनेक रोकने के लिए प्रति प्रोसेस CPU उपयोग सीमित करने का OS विकल्प कौन सा है?',o:['CPU Affinity / CPU अफिनिटी','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'tf',q:'Resource monitoring and optimization prevent performance degradation.<br>संसाधन निगरानी और अनुकूलन प्रदर्शन गिरावट को रोकते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature provides secure remote desktop access?<br>सुरक्षित रिमोट डेस्कटॉप एक्सेस प्रदान करने वाला OS फीचर कौन सा है?',o:['Remote Desktop / रिमोट डेस्कटॉप','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option enforces NLA (Network Level Authentication) for remote sessions?<br>रिमोट सेशन के लिए नेटवर्क लेवल ऑथेंटिकेशन लागू करने का OS विकल्प कौन सा है?',o:['Remote Security / रिमोट सिक्योरिटी','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Remote Desktop / रिमोट डेस्कटॉप'],a:0},
+ {type:'mcq',q:'Which OS feature logs all remote access attempts?<br>सभी रिमोट एक्सेस प्रयास लॉग करने वाला OS फीचर कौन सा है?',o:['Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option configures remote session timeout?<br>रिमोट सेशन टाइमआउट कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Session Timeout / सेशन टाइमआउट','Remote Desktop / रिमोट डेस्कटॉप','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Secure remote desktop with proper authentication prevents unauthorized access.<br>सही ऑथेंटिकेशन के साथ सुरक्षित रिमोट डेस्कटॉप अनधिकृत एक्सेस को रोकता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages BitLocker recovery keys?<br>बिटलॉकर रिकवरी कीज़ प्रबंधित करने वाला OS फीचर कौन सा है?',o:['BitLocker Management / बिटलॉकर मैनेजमेंट','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option enforces TPM (Trusted Platform Module) usage for encryption?<br>एन्क्रिप्शन के लिए TPM उपयोग लागू करने का OS विकल्प कौन सा है?',o:['TPM Settings / TPM सेटिंग्स','BitLocker / बिटलॉकर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature configures network isolation for sensitive systems?<br>सेंसिटिव सिस्टम के लिए नेटवर्क आइसोलेशन कॉन्फ़िगर करने वाला OS फीचर कौन सा है?',o:['Network Isolation / नेटवर्क आइसोलेशन','Firewall / फ़ायरवॉल','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option logs failed authentication attempts?<br>विफल ऑथेंटिकेशन प्रयास लॉग करने का OS विकल्प कौन सा है?',o:['Security Logs / सिक्योरिटी लॉग्स','Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Encryption, TPM, and network isolation enhance enterprise system security.<br>एन्क्रिप्शन, TPM, और नेटवर्क आइसोलेशन एंटरप्राइज सिस्टम सुरक्षा बढ़ाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages audit policy for compliance?<br>कम्प्लायंस के लिए ऑडिट पॉलिसी प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Audit Policy / ऑडिट पॉलिसी','Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option configures security event retention period?<br>सिक्योरिटी इवेंट रिटेंशन पीरियड कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Event Log Settings / इवेंट लॉग सेटिंग्स','Audit Policy / ऑडिट पॉलिसी','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature alerts for unauthorized configuration changes?<br>अनधिकृत कॉन्फ़िगरेशन बदलाव के लिए अलर्ट देने वाला OS फीचर कौन सा है?',o:['Security Alerts / सिक्योरिटी अलर्ट्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Event Viewer / इवेंट व्यूअर'],a:0},
+ {type:'mcq',q:'Which OS option tracks privileged account activity?<br>प्रिविलेज्ड अकाउंट गतिविधि को ट्रैक करने का OS विकल्प कौन सा है?',o:['Audit Privileged Accounts / ऑडिट प्रिविलेज्ड अकाउंट्स','User Accounts / यूजर अकाउंट्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Audit policy and security alerts help meet regulatory compliance.<br>ऑडिट पॉलिसी और सिक्योरिटी अलर्ट रेगुलेटरी कम्प्लायंस पूरा करने में मदद करते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature allows granular control over file permissions?<br>फाइल अनुमतियों पर सूक्ष्म नियंत्रण की अनुमति देने वाला OS फीचर कौन सा है?',o:['Advanced Security Settings / एडवांस्ड सिक्योरिटी सेटिंग्स','File Explorer / फाइल एक्सप्लोरर','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option configures Access Control Lists for directories?<br>डायरेक्टरी के लिए एक्सेस कंट्रोल लिस्ट कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['ACL Settings / ACL सेटिंग्स','File Properties / फाइल प्रॉपर्टीज','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature monitors unauthorized file access in real-time?<br>रीयल-टाइम में अनधिकृत फाइल एक्सेस मॉनिटर करने वाला OS फीचर कौन सा है?',o:['File Audit / फाइल ऑडिट','Task Manager / टास्क मैनेजर','Event Viewer / इवेंट व्यूअर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option encrypts specific folders using EFS?<br>EFS का उपयोग करके विशिष्ट फोल्डर को एन्क्रिप्ट करने का OS विकल्प कौन सा है?',o:['Encrypting File System / एन्क्रिप्टिंग फाइल सिस्टम','BitLocker / बिटलॉकर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Granular permission control and folder encryption enhance data security.<br>सूक्ष्म अनुमति नियंत्रण और फोल्डर एन्क्रिप्शन डेटा सुरक्षा बढ़ाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages firewall rules for inbound and outbound traffic?<br>इनबाउंड और आउटबाउंड ट्रैफिक के लिए फ़ायरवॉल नियम प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Windows Firewall / विंडोज़ फ़ायरवॉल','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option blocks specific ports for security purposes?<br>सुरक्षा उद्देश्यों के लिए विशिष्ट पोर्ट ब्लॉक करने का OS विकल्प कौन सा है?',o:['Port Blocking / पोर्ट ब्लॉकिंग','Firewall / फ़ायरवॉल','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature logs all firewall rule changes?<br>सभी फ़ायरवॉल नियम परिवर्तन लॉग करने वाला OS फीचर कौन सा है?',o:['Firewall Logging / फ़ायरवॉल लॉगिंग','Task Manager / टास्क मैनेजर','Event Viewer / इवेंट व्यूअर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option configures firewall profiles for public and private networks?<br>पब्लिक और प्राइवेट नेटवर्क के लिए फ़ायरवॉल प्रोफाइल कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Firewall Profiles / फ़ायरवॉल प्रोफाइल','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'tf',q:'Proper firewall configuration prevents unauthorized network access.<br>सही फ़ायरवॉल कॉन्फ़िगरेशन अनधिकृत नेटवर्क एक्सेस को रोकता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature enforces software restriction policies?<br>सॉफ़्टवेयर प्रतिबंध नीति लागू करने वाला OS फीचर कौन सा है?',o:['Software Restriction Policy / सॉफ़्टवेयर रेस्ट्रिक्शन पॉलिसी','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option prevents execution of unsigned applications?<br>अनसाइन किए गए एप्लिकेशन के निष्पादन को रोकने का OS विकल्प कौन सा है?',o:['Application Control / एप्लिकेशन कंट्रोल','Software Restriction Policy / सॉफ़्टवेयर रेस्ट्रिक्शन पॉलिसी','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature blocks unauthorized scripts from running?<br>अनधिकृत स्क्रिप्ट को चलने से रोकने वाला OS फीचर कौन सा है?',o:['Script Blocking / स्क्रिप्ट ब्लॉकिंग','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option audits blocked software attempts?<br>ब्लॉक किए गए सॉफ़्टवेयर प्रयासों का ऑडिट करने का OS विकल्प कौन सा है?',o:['Software Audit / सॉफ़्टवेयर ऑडिट','Task Manager / टास्क मैनेजर','Event Viewer / इवेंट व्यूअर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Enforcing software restrictions and auditing attempts secures the system.<br>सॉफ़्टवेयर प्रतिबंध लागू करना और प्रयासों का ऑडिट सिस्टम को सुरक्षित करता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature allows secure boot from USB drives?<br>USB ड्राइव से सुरक्षित बूट की अनुमति देने वाला OS फीचर कौन सा है?',o:['Secure Boot / सिक्योर बूट','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','UEFI Settings / यूईएफआई सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option enforces signed boot loaders only?<br>सिर्फ साइन किए गए बूट लोडर लागू करने का OS विकल्प कौन सा है?',o:['Boot Loader Signing / बूट लोडर साइनिंग','Secure Boot / सिक्योर बूट','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature logs boot integrity violations?<br>बूट इंटीग्रिटी उल्लंघनों को लॉग करने वाला OS फीचर कौन सा है?',o:['Boot Logs / बूट लॉग्स','Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option configures recovery key for Secure Boot?<br>सिक्योर बूट के लिए रिकवरी की कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Recovery Key Settings / रिकवरी की सेटिंग्स','Secure Boot / सिक्योर बूट','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Secure boot enforcement prevents tampering with OS boot process.<br>सिक्योर बूट लागू करना OS बूट प्रक्रिया के छेड़छाड़ को रोकता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature monitors credential guard and virtualization-based security?<br>क्रेडेंशियल गार्ड और वर्चुअलाइजेशन-आधारित सुरक्षा की निगरानी करने वाला OS फीचर कौन सा है?',o:['Credential Guard / क्रेडेंशियल गार्ड','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option configures Windows Defender Application Guard?<br>विंडोज़ डिफेंडर एप्लिकेशन गार्ड कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Application Guard / एप्लिकेशन गार्ड','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS feature isolates browser sessions for security?<br>सुरक्षा के लिए ब्राउज़र सेशन अलग करने वाला OS फीचर कौन सा है?',o:['Browser Isolation / ब्राउज़र आइसोलेशन','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Security Settings / सिक्योरिटी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option audits Application Guard activity?<br>एप्लिकेशन गार्ड गतिविधि का ऑडिट करने का OS विकल्प कौन सा है?',o:['Application Audit / एप्लिकेशन ऑडिट','Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Application Guard and browser isolation protect against malware and phishing.<br>एप्लिकेशन गार्ड और ब्राउज़र आइसोलेशन मैलवेयर और फ़िशिंग से सुरक्षा करते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages advanced networking policies for VLANs?<br>VLAN के लिए एडवांस नेटवर्किंग पॉलिसी प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Network Policy / नेटवर्क पॉलिसी','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Network Settings / नेटवर्क सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option enforces isolated network zones?<br>आइसोलेटेड नेटवर्क ज़ोन लागू करने का OS विकल्प कौन सा है?',o:['Network Isolation / नेटवर्क आइसोलेशन','Firewall / फ़ायरवॉल','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature monitors DHCP and DNS security events?<br>DHCP और DNS सुरक्षा इवेंट्स की निगरानी करने वाला OS फीचर कौन सा है?',o:['Network Security Monitoring / नेटवर्क सिक्योरिटी मॉनिटरिंग','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Event Viewer / इवेंट व्यूअर'],a:0},
+ {type:'mcq',q:'Which OS option alerts for rogue devices in network?<br>नेटवर्क में रोग डिवाइस के लिए अलर्ट देने का OS विकल्प कौन सा है?',o:['Device Alerts / डिवाइस अलर्ट्स','Firewall / फ़ायरवॉल','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Advanced network policies and monitoring prevent unauthorized access and attacks.<br>एडवांस नेटवर्क पॉलिसी और मॉनिटरिंग अनधिकृत एक्सेस और अटैक को रोकती है।',o:['True / सही','False / गलत'],a:0}
+];
+
+
+
+
+let index=0;
+let correct=0;
+let wrong=0;
+let attempted=false;
+const qno=document.getElementById('qno');
+const question=document.getElementById('question');
+const options=document.getElementById('options');
+const nextBtn=document.getElementById('next');
+const bar=document.getElementById('bar');
+const quiz=document.getElementById('quiz');
+const result=document.getElementById('result');
+
+function loadQ(){
+ attempted=false;
+ nextBtn.disabled=true;
+ options.innerHTML='';
+ const q=questions[index];
+ qno.innerText=`Question ${index+1} of ${questions.length}`;
+ question.innerHTML=q.q; // HTML used for line break
+ q.o.forEach((op,i)=>{
+  const div=document.createElement('div');
+  div.className='option';
+  div.innerText=op;
+  div.onclick=()=>select(div,i);
+  options.appendChild(div);
+ });
+ bar.style.width=((index)/questions.length*100)+'%';
+}
+
+function select(el,i){
+ if(attempted) return;
+ attempted=true;
+ const q=questions[index];
+ const ops=document.querySelectorAll('.option');
+ ops.forEach(o=>o.classList.add('disabled'));
+ if(i===q.a){
+  el.classList.add('correct');
+  correct++;
+ }else{
+  el.classList.add('wrong');
+  ops[q.a].classList.add('correct');
+  wrong++;
+ }
+ nextBtn.disabled=false;
+}
+
+function nextQ(){
+ index++;
+ if(index<questions.length){
+  loadQ();
+ }else{
+  showResult();
+ }
+}
+
+function showResult(){
+ quiz.style.display='none';
+ bar.style.width='100%';
+ result.style.display='block';
+ const total=questions.length;
+ const score=Math.round((correct/total)*100);
+ result.innerHTML=`
+  <div class="res-card green">Correct : ${correct}</div>
+  <div class="res-card red">Wrong : ${wrong}</div>
+  <div class="res-card purple">Score : ${score}%</div>
+ `;
+}
+
+loadQ();
+</script>
+</body>
+</html>
