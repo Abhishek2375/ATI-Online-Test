@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCC Chapter 1 – MCQ Practice</title>
+<style>
+body{
+ margin:0;
+ font-family:Segoe UI,Arial,sans-serif;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ min-height:100vh;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+}
+.app{
+ width:100%;
+ max-width:420px;
+ background:#fff;
+ border-radius:18px;
+ box-shadow:0 15px 40px rgba(0,0,0,.25);
+ overflow:hidden;
+}
+.header{
+ padding:16px;
+ background:linear-gradient(135deg,#ff9800,#ff5722);
+ color:#fff;
+ font-weight:600;
+ text-align:center;
+}
+.progress{
+ height:6px;
+ background:#eee;
+}
+.progress-bar{
+ height:6px;
+ width:0%;
+ background:linear-gradient(90deg,#4caf50,#8bc34a);
+ transition:.3s;
+}
+.card{
+ padding:18px;
+}
+.qno{
+ font-size:14px;
+ color:#666;
+ margin-bottom:8px;
+}
+.question{
+ font-size:16px;
+ font-weight:600;
+ margin-bottom:14px;
+}
+.option{
+ background:#f3f4f6;
+ border-radius:10px;
+ padding:12px;
+ margin-bottom:10px;
+ cursor:pointer;
+ transition:.2s;
+}
+.option:hover{background:#e5e7eb}
+.option.correct{
+ background:#4caf50;
+ color:#fff;
+}
+.option.wrong{
+ background:#f44336;
+ color:#fff;
+}
+.option.disabled{
+ pointer-events:none;
+ opacity:.9;
+}
+.btn{
+ width:100%;
+ padding:12px;
+ border:none;
+ border-radius:12px;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ color:#fff;
+ font-size:16px;
+ font-weight:600;
+ cursor:pointer;
+}
+.btn:disabled{opacity:.6}
+.result{
+ padding:20px;
+ display:none;
+}
+.res-card{
+ padding:12px;
+ border-radius:12px;
+ margin-bottom:10px;
+ color:#fff;
+ font-weight:600;
+}
+.green{background:#4caf50}
+.red{background:#f44336}
+.purple{background:#673ab7}
+</style>
+</head>
+<body>
+<div class="app">
+ <div class="header">CCC Chapter 1 – MCQ Set 1</div>
+ <div class="progress"><div class="progress-bar" id="bar"></div></div>
+ <div class="card" id="quiz">
+  <div class="qno" id="qno"></div>
+  <div class="question" id="question"></div>
+  <div id="options"></div>
+  <button class="btn" id="next" onclick="nextQ()" disabled>Next</button>
+ </div>
+ <div class="result" id="result"></div>
+</div>
+
+<script>
+const questions=[
+ {type:'mcq',q:'What is a computer?<br>कंप्यूटर क्या है?',o:['An electronic device / एक इलेक्ट्रॉनिक उपकरण','A mechanical device / एक यांत्रिक उपकरण','A natural device / एक प्राकृतिक उपकरण','A manual device / एक मैनुअल उपकरण'],a:0},
+ {type:'mcq',q:'Main objective of computer is to?<br>कंप्यूटर का मुख्य उद्देश्य क्या है?',o:['Increase work / कार्य बढ़ाना','Process data / डेटा संसाधित करना','Store papers / कागज़ रखना','Type letters / पत्र टाइप करना'],a:1},
+ {type:'mcq',q:'Which generation of computer used vacuum tubes?<br>वैक्यूम ट्यूब किस पीढ़ी में प्रयोग हुई?',o:['First / प्रथम','Second / द्वितीय','Third / तृतीय','Fourth / चतुर्थ'],a:0},
+ {type:'mcq',q:'Laptop and Smartphone are examples of?<br>लैपटॉप और स्मार्टफोन किसके उदाहरण हैं?',o:['Hardware / हार्डवेयर','IT Gadgets / आईटी गैजेट्स','Software / सॉफ्टवेयर','Programs / प्रोग्राम'],a:1},
+ {type:'tf',q:'Computer is an electronic device.<br>कंप्यूटर एक इलेक्ट्रॉनिक उपकरण है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which part is known as brain of computer?<br>कंप्यूटर का मस्तिष्क कौन सा भाग है?',o:['Monitor / मॉनिटर','Keyboard / कीबोर्ड','CPU / सीपीयू','Mouse / माउस'],a:2},
+ {type:'mcq',q:'Which of the following is an input device?<br>निम्न में से इनपुट डिवाइस कौन है?',o:['Monitor / मॉनिटर','Printer / प्रिंटर','Keyboard / कीबोर्ड','Speaker / स्पीकर'],a:2},
+ {type:'mcq',q:'RAM is a type of which memory?<br>RAM किस प्रकार की मेमोरी है?',o:['Secondary memory / द्वितीयक मेमोरी','Primary memory / प्राथमिक मेमोरी','Cache memory / कैश मेमोरी','Virtual memory / वर्चुअल मेमोरी'],a:1},
+ {type:'mcq',q:'Which device is used to display output?<br>आउटपुट दिखाने के लिए किस डिवाइस का उपयोग होता है?',o:['Keyboard / कीबोर्ड','Mouse / माउस','Monitor / मॉनिटर','Scanner / स्कैनर'],a:2},
+ {type:'tf',q:'CPU performs processing of data.<br>CPU डेटा का प्रसंस्करण करता है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which memory is permanent in nature?<br>कौन सी मेमोरी स्थायी होती है?',o:['RAM / रैम','Cache / कैश','ROM / रोम','Register / रजिस्टर'],a:2},
+ {type:'mcq',q:'Which software is used to control hardware?<br>हार्डवेयर को नियंत्रित करने के लिए कौन सा सॉफ्टवेयर उपयोग होता है?',o:['Application software / एप्लिकेशन सॉफ्टवेयर','System software / सिस्टम सॉफ्टवेयर','Utility software / यूटिलिटी सॉफ्टवेयर','Mobile app / मोबाइल ऐप'],a:1},
+ {type:'mcq',q:'MS Word is an example of?<br>MS Word किसका उदाहरण है?',o:['System software / सिस्टम सॉफ्टवेयर','Utility software / यूटिलिटी सॉफ्टवेयर','Application software / एप्लिकेशन सॉफ्टवेयर','Firmware / फर्मवेयर'],a:2},
+ {type:'mcq',q:'Which of the following is NOT hardware?<br>निम्न में से हार्डवेयर नहीं है?',o:['Keyboard / कीबोर्ड','Mouse / माउस','Windows / विंडोज','Printer / प्रिंटर'],a:2},
+ {type:'tf',q:'Keyboard is an input device.<br>कीबोर्ड एक इनपुट डिवाइस है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which device is used to take printed output?<br>प्रिंटेड आउटपुट किस डिवाइस से मिलता है?',o:['Monitor / मॉनिटर','Printer / प्रिंटर','Scanner / स्कैनर','Speaker / स्पीकर'],a:1},
+ {type:'mcq',q:'Which storage device has the largest capacity?<br>सबसे अधिक क्षमता किस स्टोरेज डिवाइस की होती है?',o:['Hard Disk / हार्ड डिस्क','CD / सीडी','DVD / डीवीडी','Pen Drive / पेन ड्राइव'],a:0},
+ {type:'mcq',q:'Which software is used for virus protection?<br>वायरस से सुरक्षा के लिए कौन सा सॉफ्टवेयर उपयोग होता है?',o:['Antivirus / एंटीवायरस','Compiler / कम्पाइलर','Interpreter / इंटरप्रेटर','Assembler / असेम्बलर'],a:0},
+ {type:'tf',q:'Software can be touched physically.<br>सॉफ्टवेयर को भौतिक रूप से छुआ जा सकता है।',o:['True / सही','False / गलत'],a:1},
+ {type:'mcq',q:'Mobile apps are mainly designed for?<br>मोबाइल ऐप मुख्य रूप से किसके लिए बनाए जाते हैं?',o:['Desktop computers / डेस्कटॉप कंप्यूटर','Mainframe computers / मेनफ्रेम कंप्यूटर','Mobile devices / मोबाइल डिवाइस','Super computers / सुपर कंप्यूटर'],a:2},
+ {type:'mcq',q:'Evolution of computers started in which year?<br>कंप्यूटर का विकास किस वर्ष में शुरू हुआ?',o:['1940 / 1940','1950 / 1950','1930 / 1930','1960 / 1960'],a:0},
+ {type:'mcq',q:'First generation computers used which technology?<br>प्रथम पीढ़ी के कंप्यूटर किस तकनीक का उपयोग करते थे?',o:['Transistors / ट्रांजिस्टर','Vacuum Tubes / वैक्यूम ट्यूब','Microprocessor / माइक्रोप्रोसेसर','Integrated Circuits / एकीकृत सर्किट'],a:1},
+ {type:'mcq',q:'Which of the following is an IT gadget?<br>निम्न में से कौन सा IT गैजेट है?',o:['Printer / प्रिंटर','Smartphone / स्मार्टफोन','Keyboard / कीबोर्ड','Hard Disk / हार्ड डिस्क'],a:1},
+ {type:'mcq',q:'Application software is used for?<br>एप्लिकेशन सॉफ्टवेयर किस लिए उपयोग होता है?',o:['Hardware management / हार्डवेयर प्रबंधन','Specific tasks / विशिष्ट कार्य','Memory storage / मेमोरी संग्रह','CPU control / CPU नियंत्रण'],a:1},
+ {type:'tf',q:'Open source software is free to use.<br>ओपन सोर्स सॉफ्टवेयर मुफ्त में उपयोग किया जा सकता है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Mobile apps are mainly designed for?<br>मोबाइल ऐप मुख्य रूप से किसके लिए बनाए जाते हैं?',o:['Desktop / डेस्कटॉप','Server / सर्वर','Mobile devices / मोबाइल डिवाइस','Mainframe / मेनफ्रेम'],a:2},
+ {type:'mcq',q:'Which is a system software?<br>कौन सा सिस्टम सॉफ्टवेयर है?',o:['MS Word / एमएस वर्ड','Windows OS / विंडोज OS','Photoshop / फोटोशॉप','Excel / एक्सेल'],a:1},
+ {type:'mcq',q:'Utility software helps in?<br>यूटिलिटी सॉफ्टवेयर किसमें मदद करता है?',o:['Virus protection / वायरस सुरक्षा','Typing documents / दस्तावेज़ टाइप करना','Presentation / प्रेजेंटेशन','Internet browsing / इंटरनेट ब्राउज़िंग'],a:0},
+ {type:'mcq',q:'CPU is responsible for?<br>CPU किसके लिए जिम्मेदार है?',o:['Input devices / इनपुट डिवाइस','Processing data / डेटा प्रसंस्करण','Storing files / फ़ाइल संग्रह','Output devices / आउटपुट डिवाइस'],a:1},
+ {type:'tf',q:'Keyboard is used to input data.<br>कीबोर्ड डेटा इनपुट करने के लिए उपयोग किया जाता है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Monitor is used for?<br>मॉनिटर किसके लिए उपयोग होता है?',o:['Input / इनपुट','Output / आउटपुट','Processing / प्रसंस्करण','Storage / संग्रह'],a:1},
+ {type:'mcq',q:'Primary memory is also called?<br>प्राथमिक मेमोरी को क्या कहा जाता है?',o:['RAM / रैम','ROM / रोम','Cache / कैश','SSD / एसएसडी'],a:0},
+ {type:'mcq',q:'Which is an example of secondary storage?<br>निम्न में से द्वितीयक संग्रहण का उदाहरण कौन सा है?',o:['Hard Disk / हार्ड डिस्क','RAM / रैम','CPU / सीपीयू','Monitor / मॉनिटर'],a:0},
+ {type:'tf',q:'ROM is permanent memory.<br>ROM स्थायी मेमोरी है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Input devices include?<br>इनपुट डिवाइस में शामिल हैं?',o:['Mouse / माउस','Monitor / मॉनिटर','Printer / प्रिंटर','Speaker / स्पीकर'],a:0},
+ {type:'mcq',q:'Output devices include?<br>आउटपुट डिवाइस में शामिल हैं?',o:['Keyboard / कीबोर्ड','CPU / सीपीयू','Monitor / मॉनिटर','RAM / रैम'],a:2},
+ {type:'mcq',q:'Utility software includes?<br>यूटिलिटी सॉफ्टवेयर में शामिल हैं?',o:['Antivirus / एंटीवायरस','MS Word / एमएस वर्ड','Excel / एक्सेल','Photoshop / फोटोशॉप'],a:0},
+ {type:'tf',q:'CPU is called the brain of the computer.<br>CPU को कंप्यूटर का मस्तिष्क कहा जाता है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Open source software can be modified.<br>ओपन सोर्स सॉफ्टवेयर में संशोधन किया जा सकता है?',o:['Yes / हाँ','No / नहीं','Sometimes / कभी-कभी','Depends on license / लाइसेंस पर निर्भर'],a:0},
+ {type:'tf',q:'Application software helps in performing specific tasks.<br>एप्लिकेशन सॉफ्टवेयर विशिष्ट कार्य करने में मदद करता है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which device is used to store permanent data?<br>कौन सा डिवाइस स्थायी डेटा संग्रहण के लिए उपयोग होता है?',o:['RAM / रैम','ROM / रोम','Cache / कैश','CPU / सीपीयू'],a:1},
+ {type:'mcq',q:'Which device is used to input text?<br>कौन सा डिवाइस टेक्स्ट इनपुट करने के लिए उपयोग होता है?',o:['Keyboard / कीबोर्ड','Mouse / माउस','Monitor / मॉनिटर','Printer / प्रिंटर'],a:0},  {type:'mcq',q:'Which software allows document editing?<br>कौन सा सॉफ्टवेयर दस्तावेज़ संपादन की अनुमति देता है?',o:['MS Word / एमएस वर्ड','MS Excel / एमएस एक्सेल','MS PowerPoint / एमएस पॉवरपॉइंट','Browser / ब्राउज़र'],a:0},
+ {type:'mcq',q:'Which device is used for output of sound?<br>कौन सा डिवाइस ध्वनि आउटपुट के लिए उपयोग होता है?',o:['Speaker / स्पीकर','Keyboard / कीबोर्ड','Mouse / माउस','Monitor / मॉनिटर'],a:0},
+ {type:'tf',q:'Monitor is an output device.<br>मॉनिटर एक आउटपुट डिवाइस है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which type of memory is temporary?<br>कौन सी मेमोरी अस्थायी होती है?',o:['RAM / रैम','ROM / रोम','Cache / कैश','SSD / एसएसडी'],a:0},  {type:'mcq',q:'Which software is used to browse internet?<br>कौन सा सॉफ्टवेयर इंटरनेट ब्राउज़ करने के लिए उपयोग होता है?',o:['Browser / ब्राउज़र','MS Word / एमएस वर्ड','Antivirus / एंटीवायरस','Calculator / कैलकुलेटर'],a:0},
+ {type:'mcq',q:'Which of the following is an output device?<br>निम्न में से आउटपुट डिवाइस कौन सा है?',o:['Printer / प्रिंटर','Keyboard / कीबोर्ड','Scanner / स्कैनर','Mouse / माउस'],a:0},
+ {type:'mcq',q:'Which is known as the main memory?<br>मुख्य मेमोरी किसे कहा जाता है?',o:['RAM / रैम','ROM / रोम','Cache / कैश','Hard Disk / हार्ड डिस्क'],a:0},
+ {type:'tf',q:'CPU processes data.<br>CPU डेटा को प्रोसेस करता है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which is secondary memory?<br>कौन सी द्वितीयक मेमोरी है?',o:['Hard Disk / हार्ड डिस्क','RAM / रैम','CPU / सीपीयू','Monitor / मॉनिटर'],a:0},
+ {type:'mcq',q:'Which software protects from viruses?<br>कौन सा सॉफ्टवेयर वायरस से सुरक्षा करता है?',o:['Antivirus / एंटीवायरस','MS Word / एमएस वर्ड','MS Excel / एमएस एक्सेल','Photoshop / फोटोशॉप'],a:0},
+ {type:'mcq',q:'Input device includes?<br>इनपुट डिवाइस में शामिल हैं?',o:['Keyboard / कीबोर्ड','Monitor / मॉनिटर','Speaker / स्पीकर','Printer / प्रिंटर'],a:0},
+ {type:'tf',q:'RAM is volatile memory.<br>RAM अस्थायी मेमोरी है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which of the following is an IT gadget?<br>निम्न में से कौन सा IT गैजेट है?',o:['Smartphone / स्मार्टफोन','Printer / प्रिंटर','Keyboard / कीबोर्ड','Hard Disk / हार्ड डिस्क'],a:0},
+ {type:'mcq',q:'Which software helps in typing documents?<br>कौन सा सॉफ्टवेयर दस्तावेज़ टाइप करने में मदद करता है?',o:['MS Word / एमएस वर्ड','MS Excel / एमएस एक्सेल','MS PowerPoint / एमएस पॉवरपॉइंट','Notepad / नोटपैड'],a:0},
+ {type:'mcq',q:'Which device is used to display images?<br>कौन सा डिवाइस छवि प्रदर्शित करने के लिए उपयोग होता है?',o:['Monitor / मॉनिटर','Printer / प्रिंटर','Keyboard / कीबोर्ड','Mouse / माउस'],a:0},
+ {type:'tf',q:'MS Word is an application software.<br>MS Word एक एप्लिकेशन सॉफ्टवेयर है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which part of computer executes instructions?<br>कंप्यूटर का कौन सा भाग निर्देशों को निष्पादित करता है?',o:['CPU / सीपीयू','RAM / रैम','Monitor / मॉनिटर','Keyboard / कीबोर्ड'],a:0},
+ {type:'mcq',q:'Which memory stores data temporarily?<br>कौन सी मेमोरी डेटा अस्थायी रूप से संग्रहित करती है?',o:['RAM / रैम','ROM / रोम','Cache / कैश','Hard Disk / हार्ड डिस्क'],a:0},
+ {type:'tf',q:'Utility software helps maintain system.<br>यूटिलिटी सॉफ्टवेयर सिस्टम बनाए रखने में मदद करता है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which is an output device?<br>कौन सा आउटपुट डिवाइस है?',o:['Printer / प्रिंटर','Keyboard / कीबोर्ड','Mouse / माउस','RAM / रैम'],a:0},
+ {type:'mcq',q:'Which is the brain of the computer?<br>कंप्यूटर का मस्तिष्क कौन सा भाग है?',o:['CPU / सीपीयू','RAM / रैम','Monitor / मॉनिटर','Hard Disk / हार्ड डिस्क'],a:0},
+ {type:'mcq',q:'Which software is used for spreadsheets?<br>कौन सा सॉफ्टवेयर स्प्रेडशीट के लिए उपयोग होता है?',o:['MS Excel / एमएस एक्सेल','MS Word / एमएस वर्ड','MS PowerPoint / एमएस पॉवरपॉइंट','Notepad / नोटपैड'],a:0},
+ {type:'tf',q:'Hard Disk is secondary storage.<br>हार्ड डिस्क द्वितीयक संग्रहण है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which device is used to scan documents?<br>कौन सा डिवाइस दस्तावेज़ स्कैन करने के लिए उपयोग होता है?',o:['Scanner / स्कैनर','Printer / प्रिंटर','Monitor / मॉनिटर','Keyboard / कीबोर्ड'],a:0},
+ {type:'mcq',q:'Which software is system software?<br>कौन सा सॉफ्टवेयर सिस्टम सॉफ्टवेयर है?',o:['Windows OS / विंडोज OS','MS Word / एमएस वर्ड','MS Excel / एमएस एक्सेल','Antivirus / एंटीवायरस'],a:0},
+ {type:'mcq',q:'Which type of software is used for presentation?<br>प्रस्तुति के लिए किस प्रकार का सॉफ्टवेयर उपयोग होता है?',o:['MS PowerPoint / एमएस पॉवरपॉइंट','MS Word / एमएस वर्ड','MS Excel / एमएस एक्सेल','Notepad / नोटपैड'],a:0},
+ {type:'tf',q:'CPU controls all operations of computer.<br>CPU कंप्यूटर के सभी कार्यों को नियंत्रित करता है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which storage device is portable?<br>कौन सा स्टोरेज डिवाइस पोर्टेबल है?',o:['Pen Drive / पेन ड्राइव','Hard Disk / हार्ड डिस्क','CD / सीडी','DVD / डीवीडी'],a:0},
+ {type:'mcq',q:'Which is input device for images?<br>कौन सा डिवाइस चित्र इनपुट के लिए उपयोग होता है?',o:['Scanner / स्कैनर','Keyboard / कीबोर्ड','Monitor / मॉनिटर','Printer / प्रिंटर'],a:0},
+ {type:'mcq',q:'Which software is used for calculations?<br>कौन सा सॉफ्टवेयर गणना के लिए उपयोग होता है?',o:['Calculator / कैलकुलेटर','MS Word / एमएस वर्ड','MS Excel / एमएस एक्सेल','Notepad / नोटपैड'],a:0},
+ {type:'tf',q:'ROM is non-volatile memory.<br>ROM गैर अस्थायी मेमोरी है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which device is used to take printouts?<br>कौन सा डिवाइस प्रिंट आउट के लिए उपयोग होता है?',o:['Printer / प्रिंटर','Monitor / मॉनिटर','Keyboard / कीबोर्ड','Mouse / माउस'],a:0},
+ {type:'mcq',q:'Which is volatile memory?<br>कौन सी मेमोरी अस्थायी है?',o:['RAM / रैम','ROM / रोम','Hard Disk / हार्ड डिस्क','SSD / एसएसडी'],a:0},
+ {type:'mcq',q:'Which device is known as pointing device?<br>कौन सा डिवाइस पॉइंटिंग डिवाइस के रूप में जाना जाता है?',o:['Mouse / माउस','Keyboard / कीबोर्ड','Monitor / मॉनिटर','Printer / प्रिंटर'],a:0},
+ {type:'tf',q:'MS Excel is used for spreadsheets.<br>MS Excel स्प्रेडशीट के लिए उपयोग होता है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which device stores data temporarily?<br>कौन सा डिवाइस डेटा अस्थायी रूप से संग्रहित करता है?',o:['RAM / रैम','ROM / रोम','Hard Disk / हार्ड डिस्क','SSD / एसएसडी'],a:0},
+ {type:'mcq',q:'Which software is used to create presentations?<br>कौन सा सॉफ्टवेयर प्रस्तुतियाँ बनाने के लिए उपयोग होता है?',o:['MS PowerPoint / एमएस पॉवरपॉइंट','MS Word / एमएस वर्ड','MS Excel / एमएस एक्सेल','Notepad / नोटपैड'],a:0},
+ {type:'tf',q:'Mouse is input device.<br>माउस इनपुट डिवाइस है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which is utility software?<br>कौन सा यूटिलिटी सॉफ्टवेयर है?',o:['Antivirus / एंटीवायरस','MS Word / एमएस वर्ड','MS Excel / एमएस एक्सेल','Photoshop / फोटोशॉप'],a:0},
+ {type:'mcq',q:'Which device is used to store large data?<br>कौन सा डिवाइस बड़े डेटा को संग्रहित करने के लिए उपयोग होता है?',o:['Hard Disk / हार्ड डिस्क','RAM / रैम','CPU / सीपीयू','SSD / एसएसडी'],a:0},
+ {type:'mcq',q:'Which is example of input device?<br>कौन सा इनपुट डिवाइस का उदाहरण है?',o:['Keyboard / कीबोर्ड','Mouse / माउस','Monitor / मॉनिटर','Printer / प्रिंटर'],a:0},
+ {type:'tf',q:'Software cannot be touched physically.<br>सॉफ्टवेयर को भौतिक रूप से छू नहीं सकते।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which device is used to display output?<br>कौन सा डिवाइस आउटपुट दिखाने के लिए उपयोग होता है?',o:['Monitor / मॉनिटर','Printer / प्रिंटर','Speaker / स्पीकर','Keyboard / कीबोर्ड'],a:0},
+ {type:'mcq',q:'Which software is used for typing documents?<br>कौन सा सॉफ्टवेयर दस्तावेज़ टाइप करने के लिए उपयोग होता है?',o:['MS Word / एमएस वर्ड','MS Excel / एमएस एक्सेल','Notepad / नोटपैड','MS PowerPoint / एमएस पॉवरपॉइंट'],a:0},
+ {type:'tf',q:'CPU executes instructions.<br>CPU निर्देशों को निष्पादित करता है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which is non-volatile memory?<br>कौन सी मेमोरी गैर अस्थायी है?',o:['ROM / रोम','RAM / रैम','Cache / कैश','SSD / एसएसडी'],a:0},
+ {type:'mcq',q:'Which software allows internet browsing?<br>कौन सा सॉफ्टवेयर इंटरनेट ब्राउज़ करने की अनुमति देता है?',o:['Browser / ब्राउज़र','MS Word / एमएस वर्ड','MS Excel / एमएस एक्सेल','Notepad / नोटपैड'],a:0},
+ {type:'mcq',q:'Which device is known as input unit?<br>कौन सा डिवाइस इनपुट यूनिट के रूप में जाना जाता है?',o:['Keyboard / कीबोर्ड','Mouse / माउस','Scanner / स्कैनर','Monitor / मॉनिटर'],a:0},
+ {type:'tf',q:'ROM retains data permanently.<br>ROM स्थायी रूप से डेटा बनाए रखती है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which device is known as storage device?<br>कौन सा डिवाइस संग्रहण डिवाइस के रूप में जाना जाता है?',o:['Hard Disk / हार्ड डिस्क','RAM / रैम','CPU / सीपीयू','Monitor / मॉनिटर'],a:0},
+ {type:'mcq',q:'Which is open source software?<br>कौन सा सॉफ्टवेयर ओपन सोर्स है?',o:['Linux / लिनक्स','Windows / विंडोज','MS Word / एमएस वर्ड','MS Excel / एमएस एक्सेल'],a:0},
+ {type:'mcq',q:'Which software is used for antivirus protection?<br>कौन सा सॉफ्टवेयर एंटीवायरस सुरक्षा के लिए उपयोग होता है?',o:['Antivirus / एंटीवायरस','MS Word / एमएस वर्ड','MS Excel / एमएस एक्सेल','Notepad / नोटपैड'],a:0},
+ {type:'mcq',q:'Which device is used to point cursor?<br>कौन सा डिवाइस कर्सर को इंगित करने के लिए उपयोग होता है?',o:['Mouse / माउस','Keyboard / कीबोर्ड','Monitor / मॉनिटर','Printer / प्रिंटर'],a:0},
+ {type:'tf',q:'Monitor displays data.<br>मॉनिटर डेटा प्रदर्शित करता है।',o:['True / सही','False / गलत'],a:0},
+ {type:'mcq',q:'Which is example of output device?<br>कौन सा आउटपुट डिवाइस का उदाहरण है?',o:['Printer / प्रिंटर','Keyboard / कीबोर्ड','Mouse / माउस','Scanner / स्कैनर'],a:0},
+ {type:'mcq',q:'Which device stores program temporarily?<br>कौन सा डिवाइस प्रोग्राम अस्थायी रूप से संग्रहित करता है?',o:['RAM / रैम','ROM / रोम','Hard Disk / हार्ड डिस्क','CPU / सीपीयू'],a:0},
+ {type:'mcq',q:'Which software helps in typing spreadsheet?<br>कौन सा सॉफ्टवेयर स्प्रेडशीट टाइप करने में मदद करता है?',o:['MS Excel / एमएस एक्सेल','MS Word / एमएस वर्ड','MS PowerPoint / एमएस पॉवरपॉइंट','Notepad / नोटपैड'],a:0},
+ {type:'tf',q:'CPU is the main processor of computer.<br>CPU कंप्यूटर का मुख्य प्रोसेसर है।',o:['True / सही','False / गलत'],a:0}
+
+];
+
+let index=0;
+let correct=0;
+let wrong=0;
+let attempted=false;
+const qno=document.getElementById('qno');
+const question=document.getElementById('question');
+const options=document.getElementById('options');
+const nextBtn=document.getElementById('next');
+const bar=document.getElementById('bar');
+const quiz=document.getElementById('quiz');
+const result=document.getElementById('result');
+
+function loadQ(){
+ attempted=false;
+ nextBtn.disabled=true;
+ options.innerHTML='';
+ const q=questions[index];
+ qno.innerText=`Question ${index+1} of ${questions.length}`;
+ question.innerHTML=q.q; // HTML used for line break
+ q.o.forEach((op,i)=>{
+  const div=document.createElement('div');
+  div.className='option';
+  div.innerText=op;
+  div.onclick=()=>select(div,i);
+  options.appendChild(div);
+ });
+ bar.style.width=((index)/questions.length*100)+'%';
+}
+
+function select(el,i){
+ if(attempted) return;
+ attempted=true;
+ const q=questions[index];
+ const ops=document.querySelectorAll('.option');
+ ops.forEach(o=>o.classList.add('disabled'));
+ if(i===q.a){
+  el.classList.add('correct');
+  correct++;
+ }else{
+  el.classList.add('wrong');
+  ops[q.a].classList.add('correct');
+  wrong++;
+ }
+ nextBtn.disabled=false;
+}
+
+function nextQ(){
+ index++;
+ if(index<questions.length){
+  loadQ();
+ }else{
+  showResult();
+ }
+}
+
+function showResult(){
+ quiz.style.display='none';
+ bar.style.width='100%';
+ result.style.display='block';
+ const total=questions.length;
+ const score=Math.round((correct/total)*100);
+ result.innerHTML=`
+  <div class="res-card green">Correct : ${correct}</div>
+  <div class="res-card red">Wrong : ${wrong}</div>
+  <div class="res-card purple">Score : ${score}%</div>
+ `;
+}
+
+loadQ();
+</script>
+</body>
+</html>
