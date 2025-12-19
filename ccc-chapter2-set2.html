@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCC Chapter 2 – MCQ Practice</title>
+<style>
+body{
+ margin:0;
+ font-family:Segoe UI,Arial,sans-serif;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ min-height:100vh;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+}
+.app{
+ width:100%;
+ max-width:420px;
+ background:#fff;
+ border-radius:18px;
+ box-shadow:0 15px 40px rgba(0,0,0,.25);
+ overflow:hidden;
+}
+.header{
+ padding:16px;
+ background:linear-gradient(135deg,#ff9800,#ff5722);
+ color:#fff;
+ font-weight:600;
+ text-align:center;
+}
+.progress{
+ height:6px;
+ background:#eee;
+}
+.progress-bar{
+ height:6px;
+ width:0%;
+ background:linear-gradient(90deg,#4caf50,#8bc34a);
+ transition:.3s;
+}
+.card{
+ padding:18px;
+}
+.qno{
+ font-size:14px;
+ color:#666;
+ margin-bottom:8px;
+}
+.question{
+ font-size:16px;
+ font-weight:600;
+ margin-bottom:14px;
+}
+.option{
+ background:#f3f4f6;
+ border-radius:10px;
+ padding:12px;
+ margin-bottom:10px;
+ cursor:pointer;
+ transition:.2s;
+}
+.option:hover{background:#e5e7eb}
+.option.correct{
+ background:#4caf50;
+ color:#fff;
+}
+.option.wrong{
+ background:#f44336;
+ color:#fff;
+}
+.option.disabled{
+ pointer-events:none;
+ opacity:.9;
+}
+.btn{
+ width:100%;
+ padding:12px;
+ border:none;
+ border-radius:12px;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ color:#fff;
+ font-size:16px;
+ font-weight:600;
+ cursor:pointer;
+}
+.btn:disabled{opacity:.6}
+.result{
+ padding:20px;
+ display:none;
+}
+.res-card{
+ padding:12px;
+ border-radius:12px;
+ margin-bottom:10px;
+ color:#fff;
+ font-weight:600;
+}
+.green{background:#4caf50}
+.red{background:#f44336}
+.purple{background:#673ab7}
+</style>
+</head>
+<body>
+<div class="app">
+ <div class="header">CCC Chapter 2 – MCQ Set 2</div>
+ <div class="progress"><div class="progress-bar" id="bar"></div></div>
+ <div class="card" id="quiz">
+  <div class="qno" id="qno"></div>
+  <div class="question" id="question"></div>
+  <div id="options"></div>
+  <button class="btn" id="next" onclick="nextQ()" disabled>Next</button>
+ </div>
+ <div class="result" id="result"></div>
+</div>
+
+<script>
+/* ================= SET 2 : Chapter 2 – Introduction to Operating System ================= */
+
+const questions = [
+ {type:'mcq',q:'Which software is required to start a computer system?<br>कंप्यूटर सिस्टम को शुरू करने के लिए कौन सा सॉफ्टवेयर आवश्यक है?',o:['Operating System / ऑपरेटिंग सिस्टम','Application Software / एप्लीकेशन सॉफ्टवेयर','Utility Software / यूटिलिटी सॉफ्टवेयर','Device Driver / डिवाइस ड्राइवर'],a:0},
+ {type:'mcq',q:'Which OS manages communication between hardware and user?<br>हार्डवेयर और उपयोगकर्ता के बीच संचार कौन सा OS प्रबंधित करता है?',o:['Operating System / ऑपरेटिंग सिस्टम','Compiler / कम्पाइलर','Interpreter / इंटरप्रेटर','Assembler / असेम्बलर'],a:0},
+ {type:'mcq',q:'Which of the following is NOT an operating system?<br>निम्न में से कौन सा ऑपरेटिंग सिस्टम नहीं है?',o:['MS Word / एमएस वर्ड','Windows / विंडोज','Linux / लिनक्स','Android / एंड्रॉइड'],a:0},
+ {type:'mcq',q:'Which operating system is mostly used on desktop computers?<br>डेस्कटॉप कंप्यूटर पर अधिकतर कौन सा OS उपयोग होता है?',o:['Windows / विंडोज','Android / एंड्रॉइड','iOS / आईओएस','Symbian / सिम्बियन'],a:0},
+ {type:'tf',q:'Operating System controls all activities of a computer.<br>ऑपरेटिंग सिस्टम कंप्यूटर की सभी गतिविधियों को नियंत्रित करता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS is designed mainly for mobile phones?<br>मुख्य रूप से मोबाइल फोन के लिए कौन सा OS बनाया गया है?',o:['Android / एंड्रॉइड','Windows 7 / विंडोज 7','Linux Mint / लिनक्स मिंट','DOS / डॉस'],a:0},
+ {type:'mcq',q:'Which company developed Windows operating system?<br>विंडोज ऑपरेटिंग सिस्टम किस कंपनी ने विकसित किया?',o:['Microsoft / माइक्रोसॉफ्ट','Google / गूगल','Apple / एप्पल','IBM / आईबीएम'],a:0},
+ {type:'mcq',q:'Which OS is used in Apple iPhone?<br>एप्पल आईफोन में कौन सा OS उपयोग होता है?',o:['iOS / आईओएस','Android / एंड्रॉइड','Windows Phone / विंडोज फोन','BlackBerry OS / ब्लैकबेरी OS'],a:0},
+ {type:'mcq',q:'Which operating system is open-source and free?<br>कौन सा ऑपरेटिंग सिस्टम ओपन-सोर्स और फ्री है?',o:['Linux / लिनक्स','Windows / विंडोज','macOS / मैकओएस','iOS / आईओएस'],a:0},
+ {type:'tf',q:'Linux operating system can be modified by users.<br>लिनक्स ऑपरेटिंग सिस्टम को उपयोगकर्ता संशोधित कर सकते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which user interface uses commands to interact with OS?<br>OS से इंटरैक्ट करने के लिए कौन सा इंटरफेस कमांड का उपयोग करता है?',o:['CLI / कमांड लाइन इंटरफेस','GUI / जीयूआई','Touch Interface / टच इंटरफेस','Voice Interface / वॉइस इंटरफेस'],a:0},
+ {type:'mcq',q:'Which interface is easy for beginners?<br>शुरुआती उपयोगकर्ताओं के लिए कौन सा इंटरफेस आसान है?',o:['GUI / जीयूआई','CLI / सीएलआई','Batch Interface / बैच इंटरफेस','Text Interface / टेक्स्ट इंटरफेस'],a:0},
+ {type:'mcq',q:'Which OS element displays icons and wallpaper?<br>आइकन और वॉलपेपर कौन सा OS एलिमेंट दिखाता है?',o:['Desktop / डेस्कटॉप','Taskbar / टास्कबार','Control Panel / कंट्रोल पैनल','Start Menu / स्टार्ट मेनू'],a:0},
+ {type:'mcq',q:'Which part of OS shows running programs at the bottom of screen?<br>स्क्रीन के नीचे चल रहे प्रोग्राम कौन सा भाग दिखाता है?',o:['Taskbar / टास्कबार','Desktop / डेस्कटॉप','Notification Area / नोटिफिकेशन एरिया','Recycle Bin / रीसायकल बिन'],a:0},
+ {type:'tf',q:'Icons are graphical symbols of files or programs.<br>आइकन फाइल या प्रोग्राम के ग्राफिकल प्रतीक होते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which action is used to start an application from icon?<br>आइकन से एप्लीकेशन शुरू करने के लिए कौन सा कार्य किया जाता है?',o:['Double Click / डबल क्लिक','Single Click / सिंगल क्लिक','Right Click / राइट क्लिक','Drag / ड्रैग'],a:0},
+ {type:'mcq',q:'Which mouse button is used to select items?<br>आइटम चुनने के लिए कौन सा माउस बटन उपयोग होता है?',o:['Left Button / लेफ्ट बटन','Right Button / राइट बटन','Middle Button / मिडिल बटन','Scroll Wheel / स्क्रॉल व्हील'],a:0},
+ {type:'mcq',q:'Which option opens shortcut menu?<br>शॉर्टकट मेनू कौन सा विकल्प खोलता है?',o:['Right Click / राइट क्लिक','Double Click / डबल क्लिक','Left Click / लेफ्ट क्लिक','Drag and Drop / ड्रैग एंड ड्रॉप'],a:0},
+ {type:'mcq',q:'Which OS setting is used to change mouse pointer speed?<br>माउस पॉइंटर की गति बदलने के लिए कौन सी OS सेटिंग होती है?',o:['Mouse Properties / माउस प्रॉपर्टीज','Display Settings / डिस्प्ले सेटिंग','System Settings / सिस्टम सेटिंग','Power Options / पावर ऑप्शन'],a:0},
+ {type:'tf',q:'Mouse properties can be changed from Control Panel.<br>माउस प्रॉपर्टीज कंट्रोल पैनल से बदली जा सकती हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS setting is used to change system date and time?<br>सिस्टम की तारीख और समय बदलने के लिए कौन सी OS सेटिंग उपयोग होती है?',o:['Date & Time Settings / डेट और टाइम सेटिंग','Display Settings / डिस्प्ले सेटिंग','Mouse Properties / माउस प्रॉपर्टीज','Power Options / पावर ऑप्शन'],a:0},
+ {type:'mcq',q:'Which OS option is used to change screen resolution?<br>स्क्रीन रेज़ोल्यूशन बदलने के लिए कौन सा OS विकल्प होता है?',o:['Display Properties / डिस्प्ले प्रॉपर्टीज','Sound Settings / साउंड सेटिंग','Mouse Settings / माउस सेटिंग','Network Settings / नेटवर्क सेटिंग'],a:0},
+ {type:'mcq',q:'Which OS tool is used to install or uninstall software?<br>सॉफ्टवेयर इंस्टॉल या अनइंस्टॉल करने के लिए कौन सा OS टूल है?',o:['Add or Remove Programs / ऐड या रिमूव प्रोग्राम','Task Manager / टास्क मैनेजर','Device Manager / डिवाइस मैनेजर','File Explorer / फाइल एक्सप्लोरर'],a:0},
+ {type:'mcq',q:'Which OS feature helps to add a new printer?<br>नया प्रिंटर जोड़ने में कौन सा OS फीचर मदद करता है?',o:['Devices and Printers / डिवाइस एंड प्रिंटर्स','System Restore / सिस्टम रिस्टोर','Disk Cleanup / डिस्क क्लीनअप','Task Scheduler / टास्क शेड्यूलर'],a:0},
+ {type:'tf',q:'Display settings control screen brightness and resolution.<br>डिस्प्ले सेटिंग स्क्रीन ब्राइटनेस और रेज़ोल्यूशन नियंत्रित करती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature allows printer sharing on network?<br>नेटवर्क पर प्रिंटर शेयर करने की सुविधा कौन सा OS फीचर देता है?',o:['Printer Sharing / प्रिंटर शेयरिंग','File Compression / फाइल कंप्रेशन','Disk Management / डिस्क प्रबंधन','Power Management / पावर प्रबंधन'],a:0},
+ {type:'mcq',q:'Which OS tool manages files and folders?<br>फाइल और फोल्डर प्रबंधन के लिए कौन सा OS टूल है?',o:['File Explorer / फाइल एक्सप्लोरर','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर','Command Prompt / कमांड प्रॉम्प्ट'],a:0},
+ {type:'mcq',q:'Which shortcut key is used to rename a file?<br>फाइल का नाम बदलने की शॉर्टकट की कौन सी है?',o:['F2','F5','Ctrl + R','Alt + F4'],a:0},
+ {type:'mcq',q:'Which folder stores deleted files temporarily?<br>डिलीट की गई फाइलें अस्थायी रूप से कहाँ जाती हैं?',o:['Recycle Bin / रीसायकल बिन','Temp Folder / टेम्प फोल्डर','System Folder / सिस्टम फोल्डर','Root Directory / रूट डायरेक्टरी'],a:0},
+ {type:'tf',q:'Recycle Bin allows restoring deleted files.<br>रीसायकल बिन डिलीट की गई फाइलों को वापस लाने देता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which key combination permanently deletes a file?<br>कौन सा की-कॉम्बिनेशन फाइल को स्थायी रूप से डिलीट करता है?',o:['Shift + Delete','Delete','Ctrl + Delete','Alt + Delete'],a:0},
+ {type:'mcq',q:'Which file extension represents a document file?<br>डॉक्यूमेंट फाइल को कौन सा एक्सटेंशन दर्शाता है?',o:['.doc / .docx','.exe','.mp3','.jpg'],a:0},
+ {type:'mcq',q:'Which extension is used for image files?<br>इमेज फाइल के लिए कौन सा एक्सटेंशन उपयोग होता है?',o:['.jpg / .png','.exe','.txt','.mp3'],a:0},
+ {type:'mcq',q:'Which extension is used for audio files?<br>ऑडियो फाइल के लिए कौन सा एक्सटेंशन होता है?',o:['.mp3','.exe','.doc','.bmp'],a:0},
+ {type:'tf',q:'File extension helps identify file type.<br>फाइल एक्सटेंशन फाइल का प्रकार पहचानने में मदद करता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS utility shows running processes?<br>चल रही प्रोसेस कौन सी OS यूटिलिटी दिखाती है?',o:['Task Manager / टास्क मैनेजर','File Explorer / फाइल एक्सप्लोरर','Control Panel / कंट्रोल पैनल','System Restore / सिस्टम रिस्टोर'],a:0},
+ {type:'mcq',q:'Which shortcut key opens Task Manager directly?<br>टास्क मैनेजर सीधे खोलने की शॉर्टकट की कौन सी है?',o:['Ctrl + Shift + Esc','Alt + F4','Win + R','Ctrl + Alt + Tab'],a:0},
+ {type:'mcq',q:'Which OS feature manages CPU time?<br>CPU समय प्रबंधन कौन सा OS फीचर करता है?',o:['Process Management / प्रोसेस प्रबंधन','File Management / फाइल प्रबंधन','Memory Management / मेमोरी प्रबंधन','Security Management / सुरक्षा प्रबंधन'],a:0},
+ {type:'mcq',q:'Which OS feature allocates RAM to programs?<br>प्रोग्राम को RAM आवंटित करने का कार्य कौन करता है?',o:['Memory Management / मेमोरी प्रबंधन','Device Management / डिवाइस प्रबंधन','User Management / यूजर प्रबंधन','Power Management / पावर प्रबंधन'],a:0},
+ {type:'tf',q:'Task Manager can end unresponsive programs.<br>टास्क मैनेजर फ्रीज़ प्रोग्राम बंद कर सकता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature controls user access and passwords?<br>यूजर एक्सेस और पासवर्ड नियंत्रित करने वाला OS फीचर कौन सा है?',o:['User Account Management / यूजर अकाउंट प्रबंधन','File Management / फाइल प्रबंधन','Process Management / प्रोसेस प्रबंधन','Power Management / पावर प्रबंधन'],a:0},
+ {type:'mcq',q:'Which OS is widely used for servers?<br>सर्वर के लिए व्यापक रूप से कौन सा OS उपयोग होता है?',o:['Linux / लिनक्स','Android / एंड्रॉइड','iOS / आईओएस','Windows ME / विंडोज ME'],a:0},
+ {type:'mcq',q:'Which OS kernel directly interacts with hardware?<br>हार्डवेयर से सीधे संपर्क करने वाला OS कर्नेल कौन सा है?',o:['Kernel / कर्नेल','Shell / शेल','GUI / जीयूआई','Utility / यूटिलिटी'],a:0},
+ {type:'mcq',q:'Which OS mode is used for troubleshooting problems?<br>समस्या समाधान के लिए कौन सा OS मोड उपयोग होता है?',o:['Safe Mode / सेफ मोड','Sleep Mode / स्लीप मोड','Hibernate Mode / हाइबरनेट मोड','Normal Mode / नॉर्मल मोड'],a:0},
+ {type:'tf',q:'Safe Mode loads minimum drivers and services.<br>सेफ मोड न्यूनतम ड्राइवर और सर्विस लोड करता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature restores system to earlier state?<br>सिस्टम को पुराने स्टेट में ले जाने वाला OS फीचर कौन सा है?',o:['System Restore / सिस्टम रिस्टोर','Disk Cleanup / डिस्क क्लीनअप','Backup / बैकअप','Task Scheduler / टास्क शेड्यूलर'],a:0},
+ {type:'mcq',q:'Which OS feature uses hard disk as extra RAM?<br>हार्ड डिस्क को अतिरिक्त RAM की तरह उपयोग करने वाला OS फीचर कौन सा है?',o:['Virtual Memory / वर्चुअल मेमोरी','Cache Memory / कैश मेमोरी','ROM / रोम','Register / रजिस्टर'],a:0},
+ {type:'mcq',q:'Which OS type is used in ATM machines?<br>ATM मशीनों में कौन सा OS उपयोग होता है?',o:['Real Time OS / रियल टाइम OS','Batch OS / बैच OS','Desktop OS / डेस्कटॉप OS','Mobile OS / मोबाइल OS'],a:0},
+ {type:'mcq',q:'Which OS feature records system events?<br>सिस्टम इवेंट रिकॉर्ड करने वाला OS फीचर कौन सा है?',o:['Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर','File Explorer / फाइल एक्सप्लोरर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Real Time OS responds within fixed time limit.<br>रियल टाइम OS निश्चित समय सीमा में प्रतिक्रिया देता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature allows multiple desktops?<br>कई डेस्कटॉप की सुविधा कौन सा OS फीचर देता है?',o:['Virtual Desktop / वर्चुअल डेस्कटॉप','User Switching / यूजर स्विचिंग','Multitasking / मल्टीटास्किंग','File Sharing / फाइल शेयरिंग'],a:0},
+ {type:'mcq',q:'Which OS feature updates system automatically?<br>सिस्टम को ऑटोमैटिक अपडेट करने वाला OS फीचर कौन सा है?',o:['Update Manager / अपडेट मैनेजर','Disk Manager / डिस्क मैनेजर','Device Manager / डिवाइस मैनेजर','File Manager / फाइल मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature protects system from viruses?<br>वायरस से सिस्टम की सुरक्षा कौन सा OS फीचर करता है?',o:['Security Management / सुरक्षा प्रबंधन','File Management / फाइल प्रबंधन','Power Management / पावर प्रबंधन','Process Management / प्रोसेस प्रबंधन'],a:0},
+ {type:'mcq',q:'Which OS component is known as the heart of OS?<br>OS का हृदय किसे कहा जाता है?',o:['Kernel / कर्नेल','Shell / शेल','GUI / जीयूआई','Driver / ड्राइवर'],a:0},
+ {type:'tf',q:'Kernel failure can stop entire operating system.<br>कर्नेल फेल होने पर पूरा ऑपरेटिंग सिस्टम रुक सकता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages background applications?<br>बैकग्राउंड एप्लीकेशन को कौन सा OS फीचर प्रबंधित करता है?',o:['Process Management / प्रोसेस प्रबंधन','File Management / फाइल प्रबंधन','User Management / यूजर प्रबंधन','Power Management / पावर प्रबंधन'],a:0},
+ {type:'mcq',q:'Which OS utility is used to manage hardware drivers?<br>हार्डवेयर ड्राइवर प्रबंधित करने के लिए कौन सी OS यूटिलिटी है?',o:['Device Manager / डिवाइस मैनेजर','Task Manager / टास्क मैनेजर','File Explorer / फाइल एक्सप्लोरर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature helps in faster system booting?<br>तेज़ सिस्टम बूटिंग में कौन सा OS फीचर मदद करता है?',o:['Fast Startup / फास्ट स्टार्टअप','Disk Cleanup / डिस्क क्लीनअप','System Restore / सिस्टम रिस्टोर','Safe Mode / सेफ मोड'],a:0},
+ {type:'mcq',q:'Which OS option puts system in low power state?<br>सिस्टम को कम पावर स्थिति में कौन सा OS विकल्प ले जाता है?',o:['Sleep / स्लीप','Restart / रिस्टार्ट','Shutdown / शटडाउन','Log off / लॉग ऑफ'],a:0},
+ {type:'tf',q:'Sleep mode saves power without shutting down system.<br>स्लीप मोड सिस्टम बंद किए बिना पावर बचाता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature saves current session to disk?<br>वर्तमान सेशन को डिस्क पर सेव करने वाला OS फीचर कौन सा है?',o:['Hibernate / हाइबरनेट','Sleep / स्लीप','Restart / रिस्टार्ट','Log off / लॉग ऑफ'],a:0},
+ {type:'mcq',q:'Which OS feature allows switching between users?<br>यूजर्स के बीच स्विच करने की सुविधा कौन सा OS फीचर देता है?',o:['User Switching / यूजर स्विचिंग','Multitasking / मल्टीटास्किंग','Virtual Desktop / वर्चुअल डेस्कटॉप','File Sharing / फाइल शेयरिंग'],a:0},
+ {type:'mcq',q:'Which OS feature allows screen locking?<br>स्क्रीन लॉक करने की सुविधा कौन सा OS फीचर देता है?',o:['Lock Screen / लॉक स्क्रीन','Sleep Mode / स्लीप मोड','Task View / टास्क व्यू','Action Center / एक्शन सेंटर'],a:0},
+ {type:'mcq',q:'Which OS feature shows notifications in Windows?<br>विंडोज में नोटिफिकेशन कौन सा OS फीचर दिखाता है?',o:['Action Center / एक्शन सेंटर','Taskbar / टास्कबार','Desktop / डेस्कटॉप','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Hibernate uses more power than sleep mode.<br>हाइबरनेट स्लीप मोड से अधिक पावर उपयोग करता है।',o:['True / सही','False / गलत'],a:1},
+
+ {type:'mcq',q:'Which OS tool checks disk errors?<br>डिस्क एरर चेक करने वाला OS टूल कौन सा है?',o:['Check Disk / चेक डिस्क','Disk Cleanup / डिस्क क्लीनअप','Defragment / डिफ्रैगमेंट','Backup / बैकअप'],a:0},
+ {type:'mcq',q:'Which OS utility rearranges fragmented files?<br>फ्रैगमेंटेड फाइलें पुनर्व्यवस्थित करने वाली OS यूटिलिटी कौन सी है?',o:['Disk Defragmenter / डिस्क डिफ्रैगमेंटर','Disk Cleanup / डिस्क क्लीनअप','Task Scheduler / टास्क शेड्यूलर','System Restore / सिस्टम रिस्टोर'],a:0},
+ {type:'mcq',q:'Which OS feature frees disk space?<br>डिस्क स्पेस खाली करने वाला OS फीचर कौन सा है?',o:['Disk Cleanup / डिस्क क्लीनअप','Backup / बैकअप','System Restore / सिस्टम रिस्टोर','Check Disk / चेक डिस्क'],a:0},
+ {type:'mcq',q:'Which OS tool schedules automatic tasks?<br>ऑटोमैटिक टास्क शेड्यूल करने वाला OS टूल कौन सा है?',o:['Task Scheduler / टास्क शेड्यूलर','Task Manager / टास्क मैनेजर','Event Viewer / इवेंट व्यूअर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Disk Defragmentation improves disk performance.<br>डिस्क डिफ्रैगमेंटेशन डिस्क की परफॉर्मेंस सुधारता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages network connections?<br>नेटवर्क कनेक्शन प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Network Management / नेटवर्क प्रबंधन','Security Management / सुरक्षा प्रबंधन','Process Management / प्रोसेस प्रबंधन','Memory Management / मेमोरी प्रबंधन'],a:0},
+ {type:'mcq',q:'Which OS setting is used to connect Wi-Fi?<br>Wi-Fi कनेक्ट करने के लिए कौन सी OS सेटिंग उपयोग होती है?',o:['Network Settings / नेटवर्क सेटिंग','Display Settings / डिस्प्ले सेटिंग','Sound Settings / साउंड सेटिंग','Power Settings / पावर सेटिंग'],a:0},
+ {type:'mcq',q:'Which OS feature protects network traffic?<br>नेटवर्क ट्रैफिक की सुरक्षा कौन सा OS फीचर करता है?',o:['Firewall / फायरवॉल','Backup / बैकअप','Disk Cleanup / डिस्क क्लीनअप','File Sharing / फाइल शेयरिंग'],a:0},
+ {type:'mcq',q:'Which OS tool monitors security logs?<br>सिक्योरिटी लॉग मॉनिटर करने वाला OS टूल कौन सा है?',o:['Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर','File Explorer / फाइल एक्सप्लोरर','Device Manager / डिवाइस मैनेजर'],a:0},
+ {type:'tf',q:'Firewall helps block unauthorized network access.<br>फायरवॉल अनधिकृत नेटवर्क एक्सेस को रोकने में मदद करता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature controls startup programs?<br>स्टार्टअप प्रोग्राम नियंत्रित करने वाला OS फीचर कौन सा है?',o:['Startup Management / स्टार्टअप प्रबंधन','Memory Management / मेमोरी प्रबंधन','File Management / फाइल प्रबंधन','Power Management / पावर प्रबंधन'],a:0},
+ {type:'mcq',q:'Which OS feature allows automatic backup?<br>ऑटोमैटिक बैकअप की सुविधा कौन सा OS फीचर देता है?',o:['Backup and Restore / बैकअप एंड रिस्टोर','Disk Cleanup / डिस्क क्लीनअप','System Restore / सिस्टम रिस्टोर','Check Disk / चेक डिस्क'],a:0},
+ {type:'mcq',q:'Which OS feature encrypts data for safety?<br>डेटा को सुरक्षित रखने के लिए एन्क्रिप्ट करने वाला OS फीचर कौन सा है?',o:['Encryption / एन्क्रिप्शन','Compression / कंप्रेशन','Indexing / इंडेक्सिंग','Defragmentation / डिफ्रैगमेंटेशन'],a:0},
+ {type:'mcq',q:'Which OS is suitable for real-time industrial control?<br>रियल-टाइम इंडस्ट्रियल कंट्रोल के लिए कौन सा OS उपयुक्त है?',o:['Real Time OS / रियल टाइम OS','Desktop OS / डेस्कटॉप OS','Mobile OS / मोबाइल OS','Batch OS / बैच OS'],a:0},
+ {type:'tf',q:'Encryption converts data into unreadable form.<br>एन्क्रिप्शन डेटा को अपठनीय रूप में बदल देता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS component handles user authentication?<br>यूजर ऑथेंटिकेशन को कौन सा OS घटक संभालता है?',o:['Security Management / सुरक्षा प्रबंधन','Memory Management / मेमोरी प्रबंधन','Process Management / प्रोसेस प्रबंधन','File Management / फाइल प्रबंधन'],a:0},
+ {type:'mcq',q:'Which OS feature allows multiple desktops?<br>कई डेस्कटॉप की सुविधा कौन सा OS फीचर देता है?',o:['Virtual Desktop / वर्चुअल डेस्कटॉप','Multitasking / मल्टीटास्किंग','User Switching / यूजर स्विचिंग','Task View / टास्क व्यू'],a:0},
+ {type:'mcq',q:'Which OS utility shows CPU and RAM usage?<br>CPU और RAM उपयोग दिखाने वाली OS यूटिलिटी कौन सी है?',o:['Task Manager / टास्क मैनेजर','Device Manager / डिवाइस मैनेजर','File Explorer / फाइल एक्सप्लोरर','Event Viewer / इवेंट व्यूअर'],a:0},
+ {type:'mcq',q:'Which OS feature isolates applications for security?<br>सुरक्षा के लिए एप्लीकेशन को अलग करने वाला OS फीचर कौन सा है?',o:['Sandboxing / सैंडबॉक्सिंग','Multitasking / मल्टीटास्किंग','Virtual Memory / वर्चुअल मेमोरी','Caching / कैशिंग'],a:0},
+ {type:'tf',q:'Task Manager can terminate running processes.<br>टास्क मैनेजर रन हो रहे प्रोसेस को समाप्त कर सकता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature balances CPU load?<br>CPU लोड को संतुलित करने वाला OS फीचर कौन सा है?',o:['Process Scheduling / प्रोसेस शेड्यूलिंग','Memory Allocation / मेमोरी एलोकेशन','File Indexing / फाइल इंडेक्सिंग','Disk Cleanup / डिस्क क्लीनअप'],a:0},
+ {type:'mcq',q:'Which OS component manages RAM allocation?<br>RAM एलोकेशन को कौन सा OS घटक प्रबंधित करता है?',o:['Memory Manager / मेमोरी मैनेजर','Process Manager / प्रोसेस मैनेजर','File Manager / फाइल मैनेजर','Device Manager / डिवाइस मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature allows safe software installation?<br>सुरक्षित सॉफ्टवेयर इंस्टॉलेशन की सुविधा कौन सा OS फीचर देता है?',o:['User Account Control (UAC) / यूजर अकाउंट कंट्रोल','Task Scheduler / टास्क शेड्यूलर','Fast Startup / फास्ट स्टार्टअप','Disk Defragmenter / डिस्क डिफ्रैगमेंटर'],a:0},
+ {type:'mcq',q:'Which OS type is used in smartphones?<br>स्मार्टफोन में कौन सा OS उपयोग होता है?',o:['Mobile Operating System / मोबाइल ऑपरेटिंग सिस्टम','Network OS / नेटवर्क OS','Batch OS / बैच OS','Distributed OS / डिस्ट्रीब्यूटेड OS'],a:0},
+ {type:'tf',q:'Mobile OS is optimized for touch interface.<br>मोबाइल OS टच इंटरफेस के लिए ऑप्टिमाइज़ होता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature supports touch gestures?<br>टच जेस्चर को सपोर्ट करने वाला OS फीचर कौन सा है?',o:['Touch Interface / टच इंटरफेस','Command Line Interface / कमांड लाइन इंटरफेस','Batch Interface / बैच इंटरफेस','Menu Driven Interface / मेनू इंटरफेस'],a:0},
+ {type:'mcq',q:'Which OS allows installation of third-party apps?<br>थर्ड पार्टी ऐप इंस्टॉल करने की अनुमति कौन सा OS देता है?',o:['Android / एंड्रॉइड','Embedded OS / एम्बेडेड OS','RTOS / रियल टाइम OS','Batch OS / बैच OS'],a:0},
+ {type:'mcq',q:'Which OS store provides verified applications?<br>वेरिफाइड एप्लीकेशन कौन सा OS स्टोर देता है?',o:['App Store / ऐप स्टोर','File Explorer / फाइल एक्सप्लोरर','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature restricts app permissions?<br>ऐप परमिशन को सीमित करने वाला OS फीचर कौन सा है?',o:['Permission Manager / परमिशन मैनेजर','Process Scheduler / प्रोसेस शेड्यूलर','Memory Cache / मेमोरी कैश','Disk Utility / डिस्क यूटिलिटी'],a:0},
+ {type:'tf',q:'App permissions improve device security.<br>ऐप परमिशन डिवाइस सुरक्षा को बेहतर बनाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature allows file search by name or type?<br>नाम या प्रकार से फाइल खोजने की सुविधा कौन सा OS फीचर देता है?',o:['File Search / फाइल सर्च','Disk Cleanup / डिस्क क्लीनअप','Task Manager / टास्क मैनेजर','Device Manager / डिवाइस मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS interface uses windows, icons, menus, and pointer?<br>विंडो, आइकन, मेनू और पॉइंटर का उपयोग करने वाला OS इंटरफेस कौन सा है?',o:['GUI / ग्राफिकल यूजर इंटरफेस','CLI / कमांड लाइन इंटरफेस','Batch Interface / बैच इंटरफेस','Text Interface / टेक्स्ट इंटरफेस'],a:0},
+ {type:'mcq',q:'Which OS feature helps in recovering system files?<br>सिस्टम फाइल रिकवरी में कौन सा OS फीचर मदद करता है?',o:['System Restore / सिस्टम रिस्टोर','Disk Defragmenter / डिस्क डिफ्रैगमेंटर','Task Scheduler / टास्क शेड्यूलर','Check Disk / चेक डिस्क'],a:0},
+ {type:'mcq',q:'Which OS manages file permissions and access rights?<br>फाइल परमिशन और एक्सेस राइट्स कौन सा OS प्रबंधित करता है?',o:['Security Management / सुरक्षा प्रबंधन','File Compression / फाइल कंप्रेशन','Disk Management / डिस्क प्रबंधन','Process Scheduling / प्रोसेस शेड्यूलिंग'],a:0},
+ {type:'tf',q:'GUI based OS is easier for beginners than CLI.<br>GUI आधारित OS शुरुआती लोगों के लिए CLI से आसान होता है।',o:['True / सही','False / गलत'],a:0}
+
+];
+
+
+let index=0;
+let correct=0;
+let wrong=0;
+let attempted=false;
+const qno=document.getElementById('qno');
+const question=document.getElementById('question');
+const options=document.getElementById('options');
+const nextBtn=document.getElementById('next');
+const bar=document.getElementById('bar');
+const quiz=document.getElementById('quiz');
+const result=document.getElementById('result');
+
+function loadQ(){
+ attempted=false;
+ nextBtn.disabled=true;
+ options.innerHTML='';
+ const q=questions[index];
+ qno.innerText=`Question ${index+1} of ${questions.length}`;
+ question.innerHTML=q.q; // HTML used for line break
+ q.o.forEach((op,i)=>{
+  const div=document.createElement('div');
+  div.className='option';
+  div.innerText=op;
+  div.onclick=()=>select(div,i);
+  options.appendChild(div);
+ });
+ bar.style.width=((index)/questions.length*100)+'%';
+}
+
+function select(el,i){
+ if(attempted) return;
+ attempted=true;
+ const q=questions[index];
+ const ops=document.querySelectorAll('.option');
+ ops.forEach(o=>o.classList.add('disabled'));
+ if(i===q.a){
+  el.classList.add('correct');
+  correct++;
+ }else{
+  el.classList.add('wrong');
+  ops[q.a].classList.add('correct');
+  wrong++;
+ }
+ nextBtn.disabled=false;
+}
+
+function nextQ(){
+ index++;
+ if(index<questions.length){
+  loadQ();
+ }else{
+  showResult();
+ }
+}
+
+function showResult(){
+ quiz.style.display='none';
+ bar.style.width='100%';
+ result.style.display='block';
+ const total=questions.length;
+ const score=Math.round((correct/total)*100);
+ result.innerHTML=`
+  <div class="res-card green">Correct : ${correct}</div>
+  <div class="res-card red">Wrong : ${wrong}</div>
+  <div class="res-card purple">Score : ${score}%</div>
+ `;
+}
+
+loadQ();
+</script>
+</body>
+</html>
