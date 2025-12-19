@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCC Chapter 1 – MCQ Practice</title>
+<style>
+body{
+ margin:0;
+ font-family:Segoe UI,Arial,sans-serif;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ min-height:100vh;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+}
+.app{
+ width:100%;
+ max-width:420px;
+ background:#fff;
+ border-radius:18px;
+ box-shadow:0 15px 40px rgba(0,0,0,.25);
+ overflow:hidden;
+}
+.header{
+ padding:16px;
+ background:linear-gradient(135deg,#ff9800,#ff5722);
+ color:#fff;
+ font-weight:600;
+ text-align:center;
+}
+.progress{
+ height:6px;
+ background:#eee;
+}
+.progress-bar{
+ height:6px;
+ width:0%;
+ background:linear-gradient(90deg,#4caf50,#8bc34a);
+ transition:.3s;
+}
+.card{
+ padding:18px;
+}
+.qno{
+ font-size:14px;
+ color:#666;
+ margin-bottom:8px;
+}
+.question{
+ font-size:16px;
+ font-weight:600;
+ margin-bottom:14px;
+}
+.option{
+ background:#f3f4f6;
+ border-radius:10px;
+ padding:12px;
+ margin-bottom:10px;
+ cursor:pointer;
+ transition:.2s;
+}
+.option:hover{background:#e5e7eb}
+.option.correct{
+ background:#4caf50;
+ color:#fff;
+}
+.option.wrong{
+ background:#f44336;
+ color:#fff;
+}
+.option.disabled{
+ pointer-events:none;
+ opacity:.9;
+}
+.btn{
+ width:100%;
+ padding:12px;
+ border:none;
+ border-radius:12px;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ color:#fff;
+ font-size:16px;
+ font-weight:600;
+ cursor:pointer;
+}
+.btn:disabled{opacity:.6}
+.result{
+ padding:20px;
+ display:none;
+}
+.res-card{
+ padding:12px;
+ border-radius:12px;
+ margin-bottom:10px;
+ color:#fff;
+ font-weight:600;
+}
+.green{background:#4caf50}
+.red{background:#f44336}
+.purple{background:#673ab7}
+</style>
+</head>
+<body>
+<div class="app">
+ <div class="header">CCC Chapter 1 – MCQ Set 4</div>
+ <div class="progress"><div class="progress-bar" id="bar"></div></div>
+ <div class="card" id="quiz">
+  <div class="qno" id="qno"></div>
+  <div class="question" id="question"></div>
+  <div id="options"></div>
+  <button class="btn" id="next" onclick="nextQ()" disabled>Next</button>
+ </div>
+ <div class="result" id="result"></div>
+</div>
+
+<script>
+const questions = [
+ {type:'mcq',q:'Which characteristic of computer ensures same result for same input?<br>कंप्यूटर की कौन सी विशेषता समान इनपुट पर समान परिणाम सुनिश्चित करती है?',o:['Speed / गति','Accuracy / शुद्धता','Versatility / बहुमुखी','Automation / स्वचालन'],a:1},
+ {type:'mcq',q:'Which stage of computer evolution introduced transistor?<br>कंप्यूटर विकास के किस चरण में ट्रांजिस्टर आया?',o:['First Generation / प्रथम','Second Generation / द्वितीय','Third Generation / तृतीय','Fourth Generation / चतुर्थ'],a:1},
+ {type:'mcq',q:'Which IT gadget is most suitable for e-reading?<br>ई-रीडिंग के लिए सबसे उपयुक्त आईटी गैजेट कौन सा है?',o:['E-reader / ई-रीडर','Printer / प्रिंटर','Scanner / स्कैनर','Plotter / प्लॉटर'],a:0},
+ {type:'mcq',q:'Which unit converts input into machine readable form?<br>इनपुट को मशीन रीडेबल रूप में कौन बदलता है?',o:['Output unit / आउटपुट','Input unit / इनपुट','Memory unit / मेमोरी','Control unit / नियंत्रण'],a:1},
+ {type:'tf',q:'Accuracy of computer depends on correctness of input.<br>कंप्यूटर की शुद्धता इनपुट की सही होने पर निर्भर करती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which CPU component decides timing and sequence of operations?<br>CPU का कौन सा भाग समय और क्रम तय करता है?',o:['ALU / एएलयू','Registers / रजिस्टर','Control Unit / नियंत्रण इकाई','Cache / कैश'],a:2},
+ {type:'mcq',q:'Which device is both input and output?<br>कौन सा डिवाइस इनपुट और आउटपुट दोनों है?',o:['Touch Screen / टच स्क्रीन','Printer / प्रिंटर','Scanner / स्कैनर','Speaker / स्पीकर'],a:0},
+ {type:'mcq',q:'Which memory type bridges speed gap between CPU and RAM?<br>CPU और RAM के बीच गति अंतर को कौन पाटता है?',o:['Cache / कैश','ROM / रोम','Hard Disk / हार्ड डिस्क','DVD / डीवीडी'],a:0},
+ {type:'mcq',q:'Which storage technology is used in SSD?<br>SSD में कौन सी स्टोरेज तकनीक प्रयोग होती है?',o:['Magnetic / चुंबकीय','Optical / ऑप्टिकल','Flash / फ्लैश','Mechanical / यांत्रिक'],a:2},
+ {type:'tf',q:'SSD has moving mechanical parts.<br>SSD में चलने वाले यांत्रिक भाग होते हैं।',o:['True / सही','False / गलत'],a:1},
+
+ {type:'mcq',q:'Which software manages process scheduling?<br>प्रोसेस शेड्यूलिंग कौन सा सॉफ्टवेयर करता है?',o:['Application software / एप्लीकेशन','Utility software / यूटिलिटी','Operating System / ऑपरेटिंग सिस्टम','Firmware / फर्मवेयर'],a:2},
+ {type:'mcq',q:'Which software type directly supports user tasks?<br>कौन सा सॉफ्टवेयर सीधे यूज़र के कार्यों को सपोर्ट करता है?',o:['System software / सिस्टम','Utility software / यूटिलिटी','Application software / एप्लीकेशन','BIOS / बायोस'],a:2},
+ {type:'mcq',q:'Which utility protects system from malicious programs?<br>कौन सी यूटिलिटी सिस्टम को हानिकारक प्रोग्राम से बचाती है?',o:['Disk Cleanup / डिस्क क्लीनअप','Antivirus / एंटीवायरस','Backup / बैकअप','Defragmenter / डिफ्रैगमेंटर'],a:1},
+ {type:'mcq',q:'Linux is an example of which software category?<br>Linux किस सॉफ्टवेयर श्रेणी का उदाहरण है?',o:['Proprietary / स्वामित्व','Open Source / ओपन सोर्स','Utility / यूटिलिटी','Application / एप्लीकेशन'],a:1},
+ {type:'tf',q:'Open source software allows source code modification.<br>ओपन सोर्स सॉफ्टवेयर सोर्स कोड संशोधन की अनुमति देता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which mobile app category includes Paytm and PhonePe?<br>Paytm और PhonePe किस मोबाइल ऐप श्रेणी में आते हैं?',o:['Entertainment / मनोरंजन','Utility / यूटिलिटी','Finance / वित्त','Education / शिक्षा'],a:2},
+ {type:'mcq',q:'Which IT gadget is essential for video surveillance?<br>वीडियो निगरानी के लिए आवश्यक आईटी गैजेट कौन सा है?',o:['CCTV Camera / सीसीटीवी कैमरा','Plotter / प्लॉटर','Printer / प्रिंटर','Scanner / स्कैनर'],a:0},
+ {type:'mcq',q:'Which memory stores firmware permanently?<br>फर्मवेयर स्थायी रूप से किस मेमोरी में रहता है?',o:['RAM / रैम','ROM / रोम','Cache / कैश','Register / रजिस्टर'],a:1},
+ {type:'mcq',q:'Which device converts audio signals into digital form?<br>ऑडियो सिग्नल को डिजिटल रूप में कौन बदलता है?',o:['Microphone / माइक्रोफोन','Speaker / स्पीकर','Sound Card / साउंड कार्ड','Headphone / हेडफोन'],a:2},
+ {type:'tf',q:'Sound card is an input-output device.<br>साउंड कार्ड इनपुट-आउटपुट डिवाइस है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which generation emphasized artificial intelligence?<br>कौन सी पीढ़ी ने आर्टिफिशियल इंटेलिजेंस पर जोर दिया?',o:['Third / तृतीय','Fourth / चतुर्थ','Fifth / पंचम','Second / द्वितीय'],a:2},
+ {type:'mcq',q:'Which computer feature enables task automation?<br>कंप्यूटर की कौन सी विशेषता कार्यों को स्वचालित बनाती है?',o:['Automation / स्वचालन','Accuracy / शुद्धता','Speed / गति','Storage / भंडारण'],a:0},
+ {type:'mcq',q:'Which IT gadget is used for digital note-taking?<br>डिजिटल नोट लेने के लिए कौन सा आईटी गैजेट प्रयोग होता है?',o:['Tablet with Stylus / स्टायलस टैबलेट','Printer / प्रिंटर','Scanner / स्कैनर','Plotter / प्लॉटर'],a:0},
+ {type:'mcq',q:'Which memory is erased after system shutdown?<br>सिस्टम बंद होने पर कौन सी मेमोरी मिट जाती है?',o:['ROM / रोम','RAM / रैम','Flash / फ्लैश','SSD / एसएसडी'],a:1},
+ {type:'tf',q:'RAM is used for temporary storage only.<br>RAM केवल अस्थायी संग्रहण के लिए प्रयोग होती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which software controls I/O devices?<br>इनपुट-आउटपुट डिवाइस को कौन सा सॉफ्टवेयर नियंत्रित करता है?',o:['Application / एप्लीकेशन','Operating System / ऑपरेटिंग सिस्टम','Utility / यूटिलिटी','Editor / एडिटर'],a:1},
+ {type:'mcq',q:'Which IT gadget supports biometric attendance?<br>बायोमेट्रिक उपस्थिति के लिए कौन सा गैजेट प्रयोग होता है?',o:['Fingerprint Device / फिंगरप्रिंट डिवाइस','Printer / प्रिंटर','Plotter / प्लॉटर','Scanner / स्कैनर'],a:0},
+ {type:'mcq',q:'Which memory has highest cost per bit?<br>प्रति बिट सबसे महंगी मेमोरी कौन सी है?',o:['Register / रजिस्टर','Cache / कैश','RAM / रैम','Hard Disk / हार्ड डिस्क'],a:0},
+ {type:'mcq',q:'Which utility software ensures data recovery?<br>डेटा रिकवरी सुनिश्चित करने वाला यूटिलिटी कौन सा है?',o:['Backup Utility / बैकअप','Disk Cleanup / क्लीनअप','Antivirus / एंटीवायरस','Defragmenter / डिफ्रैग'],a:0},
+ {type:'tf',q:'Backup utility prevents data loss.<br>बैकअप यूटिलिटी डेटा हानि से बचाती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which mobile app type supports learning platforms like BYJU’S?<br>BYJU’S जैसी ऐप किस श्रेणी में आती है?',o:['Education / शिक्षा','Utility / यूटिलिटी','Finance / वित्त','Entertainment / मनोरंजन'],a:0},
+ {type:'mcq',q:'Which IT gadget enables hands-free voice control?<br>हैंड्स-फ्री वॉयस कंट्रोल कौन सा गैजेट देता है?',o:['Smart Speaker / स्मार्ट स्पीकर','Printer / प्रिंटर','Scanner / स्कैनर','Plotter / प्लॉटर'],a:0},
+ {type:'mcq',q:'Which component stores intermediate results?<br>मध्यवर्ती परिणाम कौन सा घटक संग्रहित करता है?',o:['Register / रजिस्टर','ROM / रोम','SSD / एसएसडी','DVD / डीवीडी'],a:0},
+ {type:'mcq',q:'Which storage device is optical?<br>कौन सा स्टोरेज डिवाइस ऑप्टिकल है?',o:['CD / सीडी','Hard Disk / हार्ड डिस्क','Pen Drive / पेन ड्राइव','SSD / एसएसडी'],a:0},
+ {type:'tf',q:'CD uses laser technology for data access.<br>CD डेटा एक्सेस के लिए लेज़र तकनीक का उपयोग करती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which software enables multitasking?<br>मल्टीटास्किंग कौन सा सॉफ्टवेयर सक्षम बनाता है?',o:['Operating System / ऑपरेटिंग सिस्टम','Utility / यूटिलिटी','Application / एप्लीकेशन','Firmware / फर्मवेयर'],a:0},
+ {type:'mcq',q:'Which IT gadget assists in remote healthcare?<br>रिमोट हेल्थकेयर में कौन सा गैजेट सहायक है?',o:['Wearable Health Device / वियरेबल डिवाइस','Printer / प्रिंटर','Plotter / प्लॉटर','Scanner / स्कैनर'],a:0},
+ {type:'mcq',q:'Which software checks hardware status during booting?<br>बूटिंग के समय हार्डवेयर स्थिति कौन जाँचता है?',o:['BIOS / बायोस','OS / ओएस','Utility / यूटिलिटी','Application / एप्लीकेशन'],a:0},
+ {type:'mcq',q:'Which memory is integrated inside CPU?<br>CPU के अंदर कौन सी मेमोरी समाहित होती है?',o:['Register / रजिस्टर','RAM / रैम','ROM / रोम','Hard Disk / हार्ड डिस्क'],a:0},
+ {type:'tf',q:'Registers are faster than cache memory.<br>रजिस्टर कैश मेमोरी से तेज होते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which feature allows computer to perform different types of tasks?<br>कंप्यूटर को विभिन्न प्रकार के कार्य करने में कौन सी विशेषता सक्षम बनाती है?',o:['Speed / गति','Versatility / बहुमुखी','Accuracy / शुद्धता','Automation / स्वचालन'],a:1},
+ {type:'mcq',q:'Which generation of computers used VLSI technology?<br>कंप्यूटर की किस पीढ़ी में VLSI तकनीक का उपयोग हुआ?',o:['Second / द्वितीय','Third / तृतीय','Fourth / चतुर्थ','Fifth / पंचम'],a:2},
+ {type:'mcq',q:'Which IT gadget is mainly used for online content creation?<br>ऑनलाइन कंटेंट निर्माण के लिए मुख्यतः कौन सा आईटी गैजेट प्रयोग होता है?',o:['Digital Camera / डिजिटल कैमरा','Printer / प्रिंटर','Scanner / स्कैनर','Plotter / प्लॉटर'],a:0},
+ {type:'mcq',q:'Which unit sends processed data to output devices?<br>प्रसंस्कृत डेटा आउटपुट डिवाइस को कौन सी इकाई भेजती है?',o:['Memory Unit / मेमोरी','Input Unit / इनपुट','Output Unit / आउटपुट','Control Unit / नियंत्रण'],a:3},
+ {type:'tf',q:'Versatility means ability to perform only one task.<br>बहुमुखी का अर्थ केवल एक कार्य करने की क्षमता है।',o:['True / सही','False / गलत'],a:1},
+
+ {type:'mcq',q:'Which CPU component generates control signals?<br>CPU का कौन सा भाग नियंत्रण संकेत उत्पन्न करता है?',o:['ALU / एएलयू','Registers / रजिस्टर','Control Unit / नियंत्रण इकाई','Cache / कैश'],a:2},
+ {type:'mcq',q:'Which device is used to input drawings directly on screen?<br>स्क्रीन पर सीधे ड्राइंग इनपुट करने के लिए कौन सा डिवाइस प्रयोग होता है?',o:['Light Pen / लाइट पेन','Joystick / जॉयस्टिक','Trackball / ट्रैकबॉल','Scanner / स्कैनर'],a:0},
+ {type:'mcq',q:'Which memory stores frequently accessed data for fast retrieval?<br>तेज़ एक्सेस के लिए अक्सर उपयोग होने वाला डेटा कौन सी मेमोरी रखती है?',o:['Cache / कैश','RAM / रैम','ROM / रोम','Hard Disk / हार्ड डिस्क'],a:0},
+ {type:'mcq',q:'Which storage device has no moving parts?<br>कौन सा स्टोरेज डिवाइस बिना चलने वाले भागों के होता है?',o:['Hard Disk / हार्ड डिस्क','SSD / एसएसडी','DVD / डीवीडी','Blu-ray / ब्लू-रे'],a:1},
+ {type:'tf',q:'Cache memory reduces CPU access time.<br>कैश मेमोरी CPU का एक्सेस समय घटाती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which system software loads operating system into memory?<br>कौन सा सिस्टम सॉफ्टवेयर ऑपरेटिंग सिस्टम को मेमोरी में लोड करता है?',o:['Loader / लोडर','Compiler / कम्पाइलर','Editor / एडिटर','Utility / यूटिलिटी'],a:0},
+ {type:'mcq',q:'Which application software is used for data analysis?<br>डेटा विश्लेषण के लिए कौन सा एप्लीकेशन सॉफ्टवेयर उपयोग होता है?',o:['Spreadsheet / स्प्रेडशीट','Word Processor / वर्ड प्रोसेसर','Browser / ब्राउज़र','Media Player / मीडिया प्लेयर'],a:0},
+ {type:'mcq',q:'Which utility software reorganizes fragmented files?<br>खंडित फाइलों को पुनर्गठित करने वाला यूटिलिटी सॉफ्टवेयर कौन सा है?',o:['Disk Defragmenter / डिस्क डिफ्रैग','Disk Cleanup / क्लीनअप','Backup / बैकअप','Antivirus / एंटीवायरस'],a:0},
+ {type:'mcq',q:'Which software license allows free use but restricts redistribution?<br>कौन सा लाइसेंस मुफ्त उपयोग देता है पर पुनर्वितरण सीमित करता है?',o:['Freeware / फ्रीवेयर','Open Source / ओपन सोर्स','Public Domain / पब्लिक डोमेन','GPL / जीपीएल'],a:0},
+ {type:'tf',q:'Freeware software source code is always available.<br>फ्रीवेयर सॉफ्टवेयर का सोर्स कोड हमेशा उपलब्ध होता है।',o:['True / सही','False / गलत'],a:1},
+
+ {type:'mcq',q:'Which mobile app category includes Google Maps?<br>Google Maps किस मोबाइल ऐप श्रेणी में आता है?',o:['Navigation / नेविगेशन','Education / शिक्षा','Finance / वित्त','Entertainment / मनोरंजन'],a:0},
+ {type:'mcq',q:'Which IT gadget is used for aerial photography?<br>एरियल फोटोग्राफी के लिए कौन सा आईटी गैजेट प्रयोग होता है?',o:['Drone / ड्रोन','Webcam / वेबकैम','Scanner / स्कैनर','Plotter / प्लॉटर'],a:0},
+ {type:'mcq',q:'Which memory type is used in pen drive?<br>पेन ड्राइव में किस प्रकार की मेमोरी प्रयोग होती है?',o:['Flash / फ्लैश','Magnetic / चुंबकीय','Optical / ऑप्टिकल','Virtual / वर्चुअल'],a:0},
+ {type:'mcq',q:'Which device converts analog sound into digital data?<br>एनालॉग ध्वनि को डिजिटल डेटा में कौन बदलता है?',o:['Sound Card / साउंड कार्ड','Speaker / स्पीकर','Microphone / माइक्रोफोन','Amplifier / एम्पलीफायर'],a:0},
+ {type:'tf',q:'Sound card is mandatory for audio processing.<br>ऑडियो प्रोसेसिंग के लिए साउंड कार्ड अनिवार्य है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which generation of computer focused on parallel processing?<br>कंप्यूटर की कौन सी पीढ़ी ने पैरेलल प्रोसेसिंग पर ध्यान दिया?',o:['Third / तृतीय','Fourth / चतुर्थ','Fifth / पंचम','Second / द्वितीय'],a:2},
+ {type:'mcq',q:'Which feature of computer eliminates human intervention?<br>कंप्यूटर की कौन सी विशेषता मानव हस्तक्षेप को कम करती है?',o:['Automation / स्वचालन','Speed / गति','Accuracy / शुद्धता','Storage / भंडारण'],a:0},
+ {type:'mcq',q:'Which IT gadget is used for contactless payments?<br>कॉन्टैक्टलेस भुगतान के लिए कौन सा आईटी गैजेट प्रयोग होता है?',o:['NFC Enabled Smartphone / एनएफसी स्मार्टफोन','Printer / प्रिंटर','Scanner / स्कैनर','Plotter / प्लॉटर'],a:0},
+ {type:'mcq',q:'Which memory holds operating system during execution?<br>निष्पादन के दौरान ऑपरेटिंग सिस्टम किस मेमोरी में रहता है?',o:['RAM / रैम','ROM / रोम','Cache / कैश','SSD / एसएसडी'],a:0},
+ {type:'tf',q:'Operating system remains permanently in ROM.<br>ऑपरेटिंग सिस्टम स्थायी रूप से ROM में रहता है।',o:['True / सही','False / गलत'],a:1},
+
+ {type:'mcq',q:'Which software manages device drivers?<br>डिवाइस ड्राइवर का प्रबंधन कौन सा सॉफ्टवेयर करता है?',o:['Operating System / ऑपरेटिंग सिस्टम','Utility / यूटिलिटी','Application / एप्लीकेशन','Firmware / फर्मवेयर'],a:0},
+ {type:'mcq',q:'Which IT gadget supports virtual reality experience?<br>वर्चुअल रियलिटी अनुभव को कौन सा गैजेट सपोर्ट करता है?',o:['VR Headset / वीआर हेडसेट','Webcam / वेबकैम','Scanner / स्कैनर','Printer / प्रिंटर'],a:0},
+ {type:'mcq',q:'Which memory is used to store boot program?<br>बूट प्रोग्राम किस मेमोरी में संग्रहित होता है?',o:['ROM / रोम','RAM / रैम','Cache / कैश','Hard Disk / हार्ड डिस्क'],a:0},
+ {type:'mcq',q:'Which storage device is suitable for long-term archival?<br>दीर्घकालीन संग्रह के लिए कौन सा स्टोरेज उपयुक्त है?',o:['Magnetic Tape / मैग्नेटिक टेप','RAM / रैम','Cache / कैश','Register / रजिस्टर'],a:0},
+ {type:'tf',q:'Magnetic tape provides random access to data.<br>मैग्नेटिक टेप डेटा का रैंडम एक्सेस देता है।',o:['True / सही','False / गलत'],a:1},
+
+ {type:'mcq',q:'Which software enables system updates?<br>सिस्टम अपडेट सक्षम करने वाला सॉफ्टवेयर कौन सा है?',o:['Operating System / ऑपरेटिंग सिस्टम','Application / एप्लीकेशन','Editor / एडिटर','Compiler / कम्पाइलर'],a:0},
+ {type:'mcq',q:'Which IT gadget is used in fitness tracking?<br>फिटनेस ट्रैकिंग में कौन सा आईटी गैजेट उपयोग होता है?',o:['Smart Band / स्मार्ट बैंड','Printer / प्रिंटर','Plotter / प्लॉटर','Scanner / स्कैनर'],a:0},
+ {type:'mcq',q:'Which memory is most expensive and fastest?<br>कौन सी मेमोरी सबसे तेज और सबसे महंगी होती है?',o:['Register / रजिस्टर','Cache / कैश','RAM / रैम','ROM / रोम'],a:0},
+ {type:'mcq',q:'Which utility software compresses files?<br>फाइलों को संपीड़ित करने वाला यूटिलिटी सॉफ्टवेयर कौन सा है?',o:['Compression Utility / कंप्रेशन यूटिलिटी','Backup Utility / बैकअप','Antivirus / एंटीवायरस','Defragmenter / डिफ्रैग'],a:0},
+ {type:'tf',q:'Compressed files occupy more storage space.<br>संपीड़ित फाइलें अधिक स्टोरेज स्थान घेरती हैं।',o:['True / सही','False / गलत'],a:1},
+
+ {type:'mcq',q:'Which mobile app type supports cloud storage?<br>क्लाउड स्टोरेज को कौन सी मोबाइल ऐप सपोर्ट करती है?',o:['Cloud Apps / क्लाउड ऐप्स','Game Apps / गेम','Utility Apps / यूटिलिटी','Education Apps / शिक्षा'],a:0},
+ {type:'mcq',q:'Which IT gadget is used for live streaming?<br>लाइव स्ट्रीमिंग के लिए कौन सा आईटी गैजेट प्रयोग होता है?',o:['Streaming Camera / स्ट्रीमिंग कैमरा','Scanner / स्कैनर','Printer / प्रिंटर','Plotter / प्लॉटर'],a:0},
+ {type:'mcq',q:'Which software initializes hardware during startup?<br>स्टार्टअप के समय हार्डवेयर को प्रारंभ कौन करता है?',o:['BIOS / बायोस','Operating System / ओएस','Utility / यूटिलिटी','Application / एप्लीकेशन'],a:0},
+ {type:'mcq',q:'Which memory stores CPU instructions temporarily?<br>CPU निर्देशों को अस्थायी रूप से कौन सी मेमोरी रखती है?',o:['Register / रजिस्टर','ROM / रोम','Hard Disk / हार्ड डिस्क','Optical Disk / ऑप्टिकल'],a:0},
+ {type:'tf',q:'Registers are slower than RAM.<br>रजिस्टर RAM से धीमे होते हैं।',o:['True / सही','False / गलत'],a:1},
+
+ {type:'mcq',q:'Which characteristic of computer ensures same result every time?<br>कंप्यूटर की कौन सी विशेषता हर बार समान परिणाम सुनिश्चित करती है?',o:['Accuracy / शुद्धता','Speed / गति','Automation / स्वचालन','Storage / भंडारण'],a:0},
+ {type:'mcq',q:'Which generation of computers introduced artificial intelligence concepts?<br>कंप्यूटर की किस पीढ़ी में कृत्रिम बुद्धिमत्ता की अवधारणा आई?',o:['Third / तृतीय','Fourth / चतुर्थ','Fifth / पंचम','Second / द्वितीय'],a:2},
+ {type:'mcq',q:'Which IT gadget is mainly used for biometric authentication?<br>बायोमेट्रिक प्रमाणीकरण के लिए मुख्यतः कौन सा आईटी गैजेट उपयोग होता है?',o:['Fingerprint Scanner / फिंगरप्रिंट स्कैनर','Joystick / जॉयस्टिक','Plotter / प्लॉटर','Speaker / स्पीकर'],a:0},
+ {type:'mcq',q:'Which CPU component performs comparison operations?<br>CPU का कौन सा भाग तुलना संबंधी कार्य करता है?',o:['ALU / एएलयू','Control Unit / नियंत्रण इकाई','Register / रजिस्टर','Cache / कैश'],a:0},
+ {type:'tf',q:'Accuracy of computer depends on quality of input data.<br>कंप्यूटर की शुद्धता इनपुट डेटा की गुणवत्ता पर निर्भर करती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which input device is used for selecting options on screen?<br>स्क्रीन पर विकल्प चुनने के लिए कौन सा इनपुट डिवाइस प्रयोग होता है?',o:['Mouse / माउस','Printer / प्रिंटर','Speaker / स्पीकर','Plotter / प्लॉटर'],a:0},
+ {type:'mcq',q:'Which output device produces hard copy?<br>हार्ड कॉपी उत्पन्न करने वाला आउटपुट डिवाइस कौन सा है?',o:['Printer / प्रिंटर','Monitor / मॉनिटर','Speaker / स्पीकर','Projector / प्रोजेक्टर'],a:0},
+ {type:'mcq',q:'Which memory is volatile in nature?<br>कौन सी मेमोरी वोलाटाइल होती है?',o:['RAM / रैम','ROM / रोम','Flash / फ्लैश','Hard Disk / हार्ड डिस्क'],a:0},
+ {type:'mcq',q:'Which storage device uses laser technology?<br>लेज़र तकनीक का उपयोग कौन सा स्टोरेज डिवाइस करता है?',o:['Optical Disk / ऑप्टिकल डिस्क','Magnetic Tape / मैग्नेटिक टेप','SSD / एसएसडी','Pen Drive / पेन ड्राइव'],a:0},
+ {type:'tf',q:'ROM loses data when power is switched off.<br>बिजली बंद होने पर ROM का डेटा नष्ट हो जाता है।',o:['True / सही','False / गलत'],a:1},
+
+ {type:'mcq',q:'Which software acts as interface between user and hardware?<br>यूज़र और हार्डवेयर के बीच इंटरफेस कौन सा सॉफ्टवेयर है?',o:['Operating System / ऑपरेटिंग सिस्टम','Application Software / एप्लीकेशन','Utility Software / यूटिलिटी','Firmware / फर्मवेयर'],a:0},
+ {type:'mcq',q:'Which application software is used for presentation making?<br>प्रेज़ेंटेशन बनाने के लिए कौन सा एप्लीकेशन सॉफ्टवेयर प्रयोग होता है?',o:['Presentation Software / प्रेज़ेंटेशन','Spreadsheet / स्प्रेडशीट','Database / डेटाबेस','Browser / ब्राउज़र'],a:0},
+ {type:'mcq',q:'Which utility software protects system from malware?<br>सिस्टम को मालवेयर से सुरक्षित रखने वाला यूटिलिटी सॉफ्टवेयर कौन सा है?',o:['Antivirus / एंटीवायरस','Disk Cleanup / क्लीनअप','Backup / बैकअप','Compression / कंप्रेशन'],a:0},
+ {type:'mcq',q:'Which type of software can be modified and redistributed freely?<br>किस प्रकार का सॉफ्टवेयर स्वतंत्र रूप से संशोधित व वितरित किया जा सकता है?',o:['Open Source / ओपन सोर्स','Proprietary / प्रोप्राइटरी','Freeware / फ्रीवेयर','Shareware / शेयरवेयर'],a:0},
+ {type:'tf',q:'Proprietary software allows source code modification.<br>प्रोप्राइटरी सॉफ्टवेयर सोर्स कोड संशोधन की अनुमति देता है।',o:['True / सही','False / गलत'],a:1},
+
+ {type:'mcq',q:'Which mobile app category includes online banking apps?<br>ऑनलाइन बैंकिंग ऐप्स किस श्रेणी में आते हैं?',o:['Finance Apps / वित्तीय ऐप्स','Education Apps / शिक्षा','Utility Apps / यूटिलिटी','Entertainment Apps / मनोरंजन'],a:0},
+ {type:'mcq',q:'Which IT gadget is commonly used for video conferencing?<br>वीडियो कॉन्फ्रेंसिंग के लिए सामान्यतः कौन सा आईटी गैजेट प्रयोग होता है?',o:['Webcam / वेबकैम','Plotter / प्लॉटर','Scanner / स्कैनर','Printer / प्रिंटर'],a:0},
+ {type:'mcq',q:'Which memory is closest to CPU?<br>CPU के सबसे निकट कौन सी मेमोरी होती है?',o:['Register / रजिस्टर','RAM / रैम','Cache / कैश','ROM / रोम'],a:0},
+ {type:'mcq',q:'Which software helps in file recovery?<br>फाइल रिकवरी में सहायता करने वाला सॉफ्टवेयर कौन सा है?',o:['Utility Software / यूटिलिटी सॉफ्टवेयर','Application Software / एप्लीकेशन','System Software / सिस्टम','Firmware / फर्मवेयर'],a:0},
+ {type:'tf',q:'Utility software improves system performance.<br>यूटिलिटी सॉफ्टवेयर सिस्टम के प्रदर्शन को बेहतर बनाता है।',o:['True / सही','False / गलत'],a:0}
+
+];
+
+
+
+let index=0;
+let correct=0;
+let wrong=0;
+let attempted=false;
+const qno=document.getElementById('qno');
+const question=document.getElementById('question');
+const options=document.getElementById('options');
+const nextBtn=document.getElementById('next');
+const bar=document.getElementById('bar');
+const quiz=document.getElementById('quiz');
+const result=document.getElementById('result');
+
+function loadQ(){
+ attempted=false;
+ nextBtn.disabled=true;
+ options.innerHTML='';
+ const q=questions[index];
+ qno.innerText=`Question ${index+1} of ${questions.length}`;
+ question.innerHTML=q.q; // HTML used for line break
+ q.o.forEach((op,i)=>{
+  const div=document.createElement('div');
+  div.className='option';
+  div.innerText=op;
+  div.onclick=()=>select(div,i);
+  options.appendChild(div);
+ });
+ bar.style.width=((index)/questions.length*100)+'%';
+}
+
+function select(el,i){
+ if(attempted) return;
+ attempted=true;
+ const q=questions[index];
+ const ops=document.querySelectorAll('.option');
+ ops.forEach(o=>o.classList.add('disabled'));
+ if(i===q.a){
+  el.classList.add('correct');
+  correct++;
+ }else{
+  el.classList.add('wrong');
+  ops[q.a].classList.add('correct');
+  wrong++;
+ }
+ nextBtn.disabled=false;
+}
+
+function nextQ(){
+ index++;
+ if(index<questions.length){
+  loadQ();
+ }else{
+  showResult();
+ }
+}
+
+function showResult(){
+ quiz.style.display='none';
+ bar.style.width='100%';
+ result.style.display='block';
+ const total=questions.length;
+ const score=Math.round((correct/total)*100);
+ result.innerHTML=`
+  <div class="res-card green">Correct : ${correct}</div>
+  <div class="res-card red">Wrong : ${wrong}</div>
+  <div class="res-card purple">Score : ${score}%</div>
+ `;
+}
+
+loadQ();
+</script>
+</body>
+</html>
