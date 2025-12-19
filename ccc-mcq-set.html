@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCC MCQ Set Selection</title>
+<style>
+/* ====== RESET ====== */
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
+body{
+  background:linear-gradient(135deg,#eef2ff,#fdf2f8);
+  color:#1f2937;
+  line-height:1.5;
+}
+
+/* ====== HEADER ====== */
+.header{
+  background:linear-gradient(90deg,#4f46e5,#9333ea);
+  color:#fff;
+  padding:20px 15px;
+  text-align:center;
+  border-radius:0 0 24px 24px;
+}
+.header h1{font-size:1.6rem;margin-bottom:5px}
+.header p{font-size:0.9rem;opacity:.9}
+
+/* ====== CONTAINER ====== */
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:20px 12px 40px;
+}
+
+.section-title{
+  font-size:1.3rem;
+  margin:25px 0 15px;
+  font-weight:600;
+}
+
+/* ====== CHAPTER CARD ====== */
+.chapter{
+  background:#fff;
+  border-radius:18px;
+  margin-bottom:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+  overflow:hidden;
+}
+.chapter-header{
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+  background:linear-gradient(90deg,#e0e7ff,#fce7f3);
+}
+.chapter-header h3{font-size:1rem;font-weight:600}
+.chapter-header span{font-size:0.85rem;opacity:.8}
+
+.chapter-header.active{background:linear-gradient(90deg,#c7d2fe,#fbcfe8)}
+
+/* ====== SET GRID ====== */
+.sets{
+  display:none;
+  padding:15px;
+  animation:fade .4s ease;
+}
+@keyframes fade{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+
+.set-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.set-btn{
+  border:none;
+  padding:14px 10px;
+  border-radius:14px;
+  font-size:0.95rem;
+  font-weight:600;
+  cursor:pointer;
+  color:#fff;
+  transition:.3s;
+}
+.set-btn small{display:block;font-weight:400;font-size:.75rem;opacity:.9}
+
+.set-btn.easy{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.set-btn.medium{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.set-btn.hard{background:linear-gradient(135deg,#f97316,#ea580c)}
+
+.set-btn:hover{transform:scale(1.03)}
+
+/* ====== MISC SECTION ====== */
+.misc{
+  background:#fff;
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+.misc-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.misc .set-btn{background:linear-gradient(135deg,#14b8a6,#0d9488)}
+
+/* ====== RESPONSIVE ====== */
+@media(min-width:768px){
+  .set-grid,.misc-grid{grid-template-columns:repeat(4,1fr)}
+  .header h1{font-size:2rem}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>CCC MCQ Practice – Select Your Set</h1>
+  <p>Chapter-wise & Miscellaneous Practice Sets</p>
+</div>
+
+<div class="container">
+
+  <div class="section-title">Chapter-wise Practice</div>
+
+  <!-- CHAPTER TEMPLATE START -->
+  <div class="chapter">
+    <div class="chapter-header">
+      <h3>Chapter 1: Introduction to Computer</h3>
+      <span>10 Sets • 100 MCQs Each</span>
+    </div>
+    <div class="sets">
+      <div class="set-grid">
+        <button class="set-btn easy" onclick="window.location.href='ccc-chapter1-set1.html'">Set 1<small>100 MCQs</small></button>
+        <button class="set-btn easy" onclick="window.location.href='ccc-chapter1-set2.html'">Set 2<small>100 MCQs</small></button>
+        <button class="set-btn easy" onclick="window.location.href='ccc-chapter1-set3.html'">Set 3<small>100 MCQs</small></button>
+        <button class="set-btn medium" onclick="window.location.href='ccc-chapter1-set4.html'">Set 4<small>100 MCQs</small></button>
+        <button class="set-btn medium" onclick="window.location.href='ccc-chapter1-set5.html'">Set 5<small>100 MCQs</small></button>
+        <button class="set-btn medium" onclick="window.location.href='ccc-chapter1-set6.html'">Set 6<small>100 MCQs</small></button>
+        <button class="set-btn hard" onclick="window.location.href='ccc-chapter1-set7.html'">Set 7<small>100 MCQs</small></button>
+        <button class="set-btn hard" onclick="window.location.href='ccc-chapter1-set8.html'">Set 8<small>100 MCQs</small></button>
+        <button class="set-btn hard" onclick="window.location.href='ccc-chapter1-set9.html'">Set 9<small>100 MCQs</small></button>
+        <button class="set-btn hard" onclick="window.location.href='ccc-chapter1-set10.html'">Set 10<small>100 MCQs</small></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="chapter">
+    <div class="chapter-header">
+      <h3>Chapter 2: Introduction to Operating System</h3>
+      <span>10 Sets • 100 MCQs Each</span>
+    </div>
+    <div class="sets"><div class="set-grid">
+      <button class="set-btn easy" onclick="window.location.href='ccc-chapter2-set1.html'">Set 1<small>100 MCQs</small></button>
+      <button class="set-btn easy" onclick="window.location.href='ccc-chapter2-set2.html'">Set 2<small>100 MCQs</small></button>
+      <button class="set-btn easy" onclick="window.location.href='ccc-chapter2-set3.html'">Set 3<small>100 MCQs</small></button>
+      <button class="set-btn medium" onclick="window.location.href='ccc-chapter2-set4.html'">Set 4<small>100 MCQs</small></button>
+      <button class="set-btn medium" onclick="window.location.href='ccc-chapter2-set5.html'">Set 5<small>100 MCQs</small></button>
+      <button class="set-btn medium" onclick="window.location.href='ccc-chapter2-set6.html'">Set 6<small>100 MCQs</small></button>
+      <button class="set-btn hard" onclick="window.location.href='ccc-chapter2-set7.html'">Set 7<small>100 MCQs</small></button>
+      <button class="set-btn hard" onclick="window.location.href='ccc-chapter2-set8.html'">Set 8<small>100 MCQs</small></button>
+      <button class="set-btn hard" onclick="window.location.href='ccc-chapter2-set9.html'">Set 9<small>100 MCQs</small></button>
+      <button class="set-btn hard" onclick="window.location.href='ccc-chapter2-set10.html'">Set 10<small>100 MCQs</small></button>
+    </div></div>
+  </div>
+  
+  <div class="chapter">
+    <div class="chapter-header">
+      <h3>Chapter 3: Word Processing</h3>
+      <span>10 Sets • 100 MCQs Each</span>
+    </div>
+    <div class="sets"><div class="set-grid">
+      <button class="set-btn easy">Set 1<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 2<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 3<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 4<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 5<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 6<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 7<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 8<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 9<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 10<small>100 MCQs</small></button>
+    </div></div>
+  </div>
+  
+  <div class="chapter">
+    <div class="chapter-header">
+      <h3>Chapter 4: Spreadsheet</h3>
+      <span>10 Sets • 100 MCQs Each</span>
+    </div>
+    <div class="sets"><div class="set-grid">
+      <button class="set-btn easy">Set 1<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 2<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 3<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 4<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 5<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 6<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 7<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 8<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 9<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 10<small>100 MCQs</small></button>
+    </div></div>
+  </div>
+  
+  <div class="chapter">
+    <div class="chapter-header">
+      <h3>Chapter 5: Presentation</h3>
+      <span>10 Sets • 100 MCQs Each</span>
+    </div>
+    <div class="sets"><div class="set-grid">
+      <button class="set-btn easy">Set 1<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 2<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 3<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 4<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 5<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 6<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 7<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 8<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 9<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 10<small>100 MCQs</small></button>
+    </div></div>
+  </div>
+  
+  <div class="chapter">
+    <div class="chapter-header">
+      <h3>Chapter 6: Introduction to Internet and WWW</h3>
+      <span>10 Sets • 100 MCQs Each</span>
+    </div>
+    <div class="sets"><div class="set-grid">
+      <button class="set-btn easy">Set 1<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 2<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 3<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 4<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 5<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 6<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 7<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 8<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 9<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 10<small>100 MCQs</small></button>
+    </div></div>
+  </div>
+  
+  <div class="chapter">
+    <div class="chapter-header">
+      <h3>Chapter 7: E-mail, Social Networking and e-Governance Services</h3>
+      <span>10 Sets • 100 MCQs Each</span>
+    </div>
+    <div class="sets"><div class="set-grid">
+      <button class="set-btn easy">Set 1<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 2<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 3<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 4<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 5<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 6<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 7<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 8<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 9<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 10<small>100 MCQs</small></button>
+    </div></div>
+  </div>
+  
+  <div class="chapter">
+    <div class="chapter-header">
+      <h3>Chapter 8: Digital Financial Tools and Applications</h3>
+      <span>10 Sets • 100 MCQs Each</span>
+    </div>
+    <div class="sets"><div class="set-grid">
+      <button class="set-btn easy">Set 1<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 2<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 3<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 4<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 5<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 6<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 7<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 8<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 9<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 10<small>100 MCQs</small></button>
+    </div></div>
+  </div>
+  
+  <div class="chapter">
+    <div class="chapter-header">
+      <h3>Chapter 9: Overview of Cyber Security</h3>
+      <span>10 Sets • 100 MCQs Each</span>
+    </div>
+    <div class="sets"><div class="set-grid">
+      <button class="set-btn easy">Set 1<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 2<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 3<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 4<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 5<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 6<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 7<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 8<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 9<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 10<small>100 MCQs</small></button>
+    </div></div>
+  </div>
+  
+  <div class="chapter">
+    <div class="chapter-header">
+      <h3>Chapter 10: Overview of Future Skills and Artificial Intelligence</h3>
+      <span>10 Sets • 100 MCQs Each</span>
+    </div>
+    <div class="sets"><div class="set-grid">
+      <button class="set-btn easy">Set 1<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 2<small>100 MCQs</small></button>
+      <button class="set-btn easy">Set 3<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 4<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 5<small>100 MCQs</small></button>
+      <button class="set-btn medium">Set 6<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 7<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 8<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 9<small>100 MCQs</small></button>
+      <button class="set-btn hard">Set 10<small>100 MCQs</small></button>
+    </div></div>
+  </div>
+  <!-- CHAPTER TEMPLATE END -->
+  
+  <div class="section-title">Miscellaneous Practice</div>
+
+  <div class="misc">
+    <div class="misc-grid">
+      <!-- 20 Misc Sets -->
+      <button class="set-btn">Misc Set 1<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 2<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 3<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 4<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 5<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 6<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 7<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 8<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 9<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 10<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 11<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 12<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 13<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 14<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 15<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 16<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 17<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 18<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 19<small>Mixed</small></button>
+      <button class="set-btn">Misc Set 20<small>Mixed</small></button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Accordion Toggle
+const headers=document.querySelectorAll('.chapter-header');
+headers.forEach(h=>{
+  h.addEventListener('click',()=>{
+    h.classList.toggle('active');
+    const sets=h.nextElementSibling;
+    sets.style.display=sets.style.display==='block'?'none':'block';
+  });
+});
+
+</script>
+
+</body>
+</html>
