@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCC Chapter 2 – MCQ Practice</title>
+<style>
+body{
+ margin:0;
+ font-family:Segoe UI,Arial,sans-serif;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ min-height:100vh;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+}
+.app{
+ width:100%;
+ max-width:420px;
+ background:#fff;
+ border-radius:18px;
+ box-shadow:0 15px 40px rgba(0,0,0,.25);
+ overflow:hidden;
+}
+.header{
+ padding:16px;
+ background:linear-gradient(135deg,#ff9800,#ff5722);
+ color:#fff;
+ font-weight:600;
+ text-align:center;
+}
+.progress{
+ height:6px;
+ background:#eee;
+}
+.progress-bar{
+ height:6px;
+ width:0%;
+ background:linear-gradient(90deg,#4caf50,#8bc34a);
+ transition:.3s;
+}
+.card{
+ padding:18px;
+}
+.qno{
+ font-size:14px;
+ color:#666;
+ margin-bottom:8px;
+}
+.question{
+ font-size:16px;
+ font-weight:600;
+ margin-bottom:14px;
+}
+.option{
+ background:#f3f4f6;
+ border-radius:10px;
+ padding:12px;
+ margin-bottom:10px;
+ cursor:pointer;
+ transition:.2s;
+}
+.option:hover{background:#e5e7eb}
+.option.correct{
+ background:#4caf50;
+ color:#fff;
+}
+.option.wrong{
+ background:#f44336;
+ color:#fff;
+}
+.option.disabled{
+ pointer-events:none;
+ opacity:.9;
+}
+.btn{
+ width:100%;
+ padding:12px;
+ border:none;
+ border-radius:12px;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ color:#fff;
+ font-size:16px;
+ font-weight:600;
+ cursor:pointer;
+}
+.btn:disabled{opacity:.6}
+.result{
+ padding:20px;
+ display:none;
+}
+.res-card{
+ padding:12px;
+ border-radius:12px;
+ margin-bottom:10px;
+ color:#fff;
+ font-weight:600;
+}
+.green{background:#4caf50}
+.red{background:#f44336}
+.purple{background:#673ab7}
+</style>
+</head>
+<body>
+<div class="app">
+ <div class="header">CCC Chapter 2 – MCQ Set 7</div>
+ <div class="progress"><div class="progress-bar" id="bar"></div></div>
+ <div class="card" id="quiz">
+  <div class="qno" id="qno"></div>
+  <div class="question" id="question"></div>
+  <div id="options"></div>
+  <button class="btn" id="next" onclick="nextQ()" disabled>Next</button>
+ </div>
+ <div class="result" id="result"></div>
+</div>
+
+<script>
+/* ===== SET 7 : Questions 1–100 (Chapter 2 – Operating System) ===== */
+
+const questions = [
+ {type:'mcq',q:'Which OS feature schedules background tasks automatically?<br>पृष्ठभूमि कार्यों को स्वचालित रूप से शेड्यूल करने वाला OS फीचर कौन सा है?',o:['Task Scheduler / टास्क शेड्यूलर','Task Manager / टास्क मैनेजर','Startup Programs / स्टार्टअप प्रोग्राम','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option configures power-saving features?<br>पावर सेविंग फीचर कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Power Options / पावर ऑप्शन्स','Display Settings / डिस्प्ले सेटिंग्स','Device Manager / डिवाइस मैनेजर','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature prioritizes CPU usage among processes?<br>प्रोसेस में CPU उपयोग को प्राथमिकता देने वाला OS फीचर कौन सा है?',o:['Process Scheduling / प्रोसेस शेड्यूलिंग','Task Manager / टास्क मैनेजर','Device Manager / डिवाइस मैनेजर','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option monitors memory usage in real-time?<br>रीयल-टाइम में मेमोरी उपयोग की निगरानी करने का OS विकल्प कौन सा है?',o:['Task Manager / टास्क मैनेजर','Performance Monitor / परफॉरमेंस मॉनिटर','Device Manager / डिवाइस मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Multitasking allows multiple applications to run simultaneously without conflict.<br>मल्टीटास्किंग बिना संघर्ष के कई एप्लीकेशन को एक साथ चलाने की अनुमति देती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages hidden system files?<br>हिडन सिस्टम फाइल प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Folder Options / फोल्डर विकल्प','File Explorer / फाइल एक्सप्लोरर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option sets file and folder permissions?<br>फाइल और फोल्डर परमिशन सेट करने का OS विकल्प कौन सा है?',o:['Properties → Security / प्रॉपर्टीज → सिक्योरिटी','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','File Explorer / फाइल एक्सप्लोरर'],a:0},
+ {type:'mcq',q:'Which OS feature encrypts files to protect data?<br>डेटा सुरक्षा के लिए फाइल को एन्क्रिप्ट करने वाला OS फीचर कौन सा है?',o:['Encryption / एन्क्रिप्शन','Compression / कम्प्रेशन','Backup / बैकअप','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option restores a previous version of a file?<br>फाइल का पिछला संस्करण रिस्टोर करने का OS विकल्प कौन सा है?',o:['Restore Previous Version / रिस्टोर प्रीवियस वर्शन','Backup / बैकअप','Recycle Bin / रीसायकल बिन','File Properties / फाइल प्रॉपर्टीज'],a:0},
+ {type:'tf',q:'Encrypting files increases security but may slow access.<br>फाइल को एन्क्रिप्ट करने से सुरक्षा बढ़ती है लेकिन एक्सेस धीमा हो सकता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages virtual memory?<br>वर्चुअल मेमोरी प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Virtual Memory Settings / वर्चुअल मेमोरी सेटिंग्स','Task Manager / टास्क मैनेजर','Performance Monitor / परफॉरमेंस मॉनिटर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option sets paging file size?<br>पेजिंग फाइल का आकार सेट करने का OS विकल्प कौन सा है?',o:['Virtual Memory / वर्चुअल मेमोरी','Disk Cleanup / डिस्क क्लीनअप','Task Scheduler / टास्क शेड्यूलर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature monitors system performance trends?<br>सिस्टम प्रदर्शन रुझानों की निगरानी करने वाला OS फीचर कौन सा है?',o:['Performance Monitor / परफॉरमेंस मॉनिटर','Task Manager / टास्क मैनेजर','Device Manager / डिवाइस मैनेजर','System Tray / सिस्टम ट्रे'],a:0},
+ {type:'mcq',q:'Which OS option ends unresponsive applications forcefully?<br>अनरेस्पॉन्सिव एप्लीकेशन को फोर्सफुली समाप्त करने का OS विकल्प कौन सा है?',o:['End Task / एंड टास्क','Restart / रीस्टार्ट','Pause / पॉज़','Stop / स्टॉप'],a:0},
+ {type:'tf',q:'Monitoring performance helps in preventing system crashes.<br>प्रदर्शन की निगरानी सिस्टम क्रैश को रोकने में मदद करती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages startup applications to reduce boot time?<br>बूट समय कम करने के लिए स्टार्टअप एप्लीकेशन प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Startup Manager / स्टार्टअप मैनेजर','Task Manager / टास्क मैनेजर','Task Scheduler / टास्क शेड्यूलर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option schedules disk cleanup automatically?<br>डिस्क क्लीनअप को स्वचालित रूप से शेड्यूल करने का OS विकल्प कौन सा है?',o:['Task Scheduler / टास्क शेड्यूलर','Disk Cleanup / डिस्क क्लीनअप','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature provides detailed hardware information?<br>विस्तृत हार्डवेयर जानकारी प्रदान करने वाला OS फीचर कौन सा है?',o:['System Information / सिस्टम इंफॉर्मेशन','Device Manager / डिवाइस मैनेजर','Performance Monitor / परफॉरमेंस मॉनिटर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option updates system drivers automatically?<br>सिस्टम ड्राइवर को स्वचालित रूप से अपडेट करने का OS विकल्प कौन सा है?',o:['Device Manager → Update Driver / डिवाइस मैनेजर → अपडेट ड्राइवर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','System Tray / सिस्टम ट्रे'],a:0},
+ {type:'tf',q:'Automatic driver updates reduce hardware compatibility issues.<br>स्वचालित ड्राइवर अपडेट हार्डवेयर संगतता समस्याओं को कम करते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages scheduled backups?<br>शेड्यूल किए गए बैकअप को प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Backup and Restore / बैकअप और रिस्टोर','Task Scheduler / टास्क शेड्यूलर','File Explorer / फाइल एक्सप्लोरर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option restores system to an earlier date?<br>सिस्टम को पहले की तारीख पर रिस्टोर करने का OS विकल्प कौन सा है?',o:['System Restore / सिस्टम रिस्टोर','Backup / बैकअप','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature allows advanced file search with filters?<br>फ़िल्टर के साथ उन्नत फ़ाइल खोज की अनुमति देने वाला OS फीचर कौन सा है?',o:['Search Options / सर्च ऑप्शन्स','File Explorer / फाइल एक्सप्लोरर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option restricts access to certain folders?<br>कुछ फ़ोल्डर तक पहुँच को प्रतिबंधित करने का OS विकल्प कौन सा है?',o:['Folder Permissions / फोल्डर परमिशन्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','File Explorer / फाइल एक्सप्लोरर'],a:0},
+ {type:'tf',q:'Advanced search options help in finding files faster and accurately.<br>उन्नत खोज विकल्प फाइल को तेज़ और सही ढंग से खोजने में मदद करते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature monitors network traffic for security?<br>सुरक्षा के लिए नेटवर्क ट्रैफ़िक की निगरानी करने वाला OS फीचर कौन सा है?',o:['Network Monitor / नेटवर्क मॉनिटर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Device Manager / डिवाइस मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option disables unused network adapters?<br>अप्रयुक्त नेटवर्क एडाप्टर को डिसेबल करने का OS विकल्प कौन सा है?',o:['Disable Adapter / एडाप्टर डिसेबल','Enable Adapter / एडाप्टर सक्षम करें','Network Settings / नेटवर्क सेटिंग्स','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature controls firewall settings?<br>फ़ायरवॉल सेटिंग नियंत्रित करने वाला OS फीचर कौन सा है?',o:['Firewall Settings / फ़ायरवॉल सेटिंग्स','Network Monitor / नेटवर्क मॉनिटर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option sets user account control levels?<br>यूजर अकाउंट कंट्रोल लेवल सेट करने का OS विकल्प कौन सा है?',o:['UAC / यूजर अकाउंट कंट्रोल','User Accounts / यूजर अकाउंट्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Firewall and UAC settings enhance overall system security.<br>फ़ायरवॉल और UAC सेटिंग्स समग्र सिस्टम सुरक्षा बढ़ाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages device connectivity for mobile?<br>मोबाइल के लिए डिवाइस कनेक्टिविटी प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Network & Connectivity / नेटवर्क और कनेक्टिविटी','Wi-Fi / वाई-फाई','Bluetooth / ब्लूटूथ','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option sets data usage limits?<br>डेटा उपयोग सीमा सेट करने का OS विकल्प कौन सा है?',o:['Data Limit / डेटा लिमिट','Wi-Fi Settings / वाई-फाई सेटिंग्स','Network Monitor / नेटवर्क मॉनिटर','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature controls app permissions for sensitive data?<br>संवेदनशील डेटा के लिए ऐप परमिशन नियंत्रित करने वाला OS फीचर कौन सा है?',o:['App Permissions / ऐप परमिशन्स','Security Settings / सिक्योरिटी सेटिंग्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option monitors mobile battery health?<br>मोबाइल बैटरी हेल्थ की निगरानी करने का OS विकल्प कौन सा है?',o:['Battery Settings / बैटरी सेटिंग्स','Power Options / पावर ऑप्शन्स','Display Settings / डिस्प्ले सेटिंग्स','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'tf',q:'App permissions and data limits protect privacy on devices.<br>ऐप परमिशन्स और डेटा लिमिट डिवाइस पर गोपनीयता की सुरक्षा करते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages system logs for auditing?<br>ऑडिटिंग के लिए सिस्टम लॉग प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option filters system events by severity?<br>सिस्टम इवेंट को गंभीरता के अनुसार फ़िल्टर करने का OS विकल्प कौन सा है?',o:['Event Viewer Filters / इवेंट व्यूअर फ़िल्टर्स','Task Scheduler / टास्क शेड्यूलर','Performance Monitor / परफॉरमेंस मॉनिटर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature tracks application crashes?<br>एप्लीकेशन क्रैश को ट्रैक करने वाला OS फीचर कौन सा है?',o:['Reliability Monitor / रिलायबिलिटी मॉनिटर','Task Manager / टास्क मैनेजर','Event Viewer / इवेंट व्यूअर','Device Manager / डिवाइस मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option schedules automated system maintenance?<br>स्वचालित सिस्टम मेंटेनेंस शेड्यूल करने का OS विकल्प कौन सा है?',o:['Task Scheduler / टास्क शेड्यूलर','Startup Manager / स्टार्टअप मैनेजर','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'tf',q:'Reliability Monitor helps identify patterns of system instability.<br>रिलायबिलिटी मॉनिटर सिस्टम अस्थिरता के पैटर्न पहचानने में मदद करता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages system restore points?<br>सिस्टम रिस्टोर पॉइंट प्रबंधित करने वाला OS फीचर कौन सा है?',o:['System Restore / सिस्टम रिस्टोर','Backup / बैकअप','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option restores individual files from backup?<br>बैकअप से व्यक्तिगत फाइल रिस्टोर करने का OS विकल्प कौन सा है?',o:['Restore Files / फाइल रिस्टोर','Backup Now / बैकअप करें','System Restore / सिस्टम रिस्टोर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature schedules disk defragmentation?<br>डिस्क डीफ्रैगमेंटेशन शेड्यूल करने वाला OS फीचर कौन सा है?',o:['Task Scheduler / टास्क शेड्यूलर','Disk Defragmenter / डिस्क डिफ्रैगमेंटर','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option checks disk integrity automatically?<br>डिस्क इंटीग्रिटी को स्वचालित रूप से चेक करने का OS विकल्प कौन सा है?',o:['Check Disk / चेक डिस्क','Disk Cleanup / डिस्क क्लीनअप','Disk Defragmenter / डिस्क डिफ्रैगमेंटर','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'tf',q:'Automated maintenance tasks reduce system errors and improve performance.<br>स्वचालित मेंटेनेंस कार्य सिस्टम त्रुटियों को कम करते हैं और प्रदर्शन सुधारते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages system updates?<br>सिस्टम अपडेट प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Windows Update / विंडोज़ अपडेट','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Device Manager / डिवाइस मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option schedules updates for a specific time?<br>विशिष्ट समय के लिए अपडेट शेड्यूल करने का OS विकल्प कौन सा है?',o:['Update Settings / अपडेट सेटिंग्स','Task Scheduler / टास्क शेड्यूलर','Control Panel / कंट्रोल पैनल','Device Manager / डिवाइस मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature allows rollback of failed updates?<br>असफल अपडेट को रोलबैक करने की अनुमति देने वाला OS फीचर कौन सा है?',o:['Update Rollback / अपडेट रोलबैक','System Restore / सिस्टम रिस्टोर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option hides critical system files?<br>महत्वपूर्ण सिस्टम फाइल छुपाने का OS विकल्प कौन सा है?',o:['Folder Options → Hidden / फोल्डर विकल्प → हिडन','File Explorer / फाइल एक्सप्लोरर','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'tf',q:'Managing system updates ensures security and stability.<br>सिस्टम अपडेट का प्रबंधन सुरक्षा और स्थिरता सुनिश्चित करता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages advanced firewall rules?<br>एडवांस फ़ायरवॉल नियम प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Windows Firewall / विंडोज़ फ़ायरवॉल','Network Monitor / नेटवर्क मॉनिटर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option blocks specific applications from accessing network?<br>नेटवर्क तक पहुँच से विशेष एप्लिकेशन को ब्लॉक करने का OS विकल्प कौन सा है?',o:['App Block / एप्लिकेशन ब्लॉक','Firewall Settings / फ़ायरवॉल सेटिंग्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature monitors network bandwidth usage?<br>नेटवर्क बैंडविड्थ उपयोग की निगरानी करने वाला OS फीचर कौन सा है?',o:['Network Monitor / नेटवर्क मॉनिटर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Device Manager / डिवाइस मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option restricts internet access during specific hours?<br>विशिष्ट घंटों के दौरान इंटरनेट एक्सेस प्रतिबंधित करने का OS विकल्प कौन सा है?',o:['Parental Control / पैरेंटल कंट्रोल','Firewall Settings / फ़ायरवॉल सेटिंग्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Advanced firewall and parental control enhance overall system security.<br>एडवांस फ़ायरवॉल और पैरेंटल कंट्रोल समग्र सिस्टम सुरक्षा बढ़ाते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature logs all system events for troubleshooting?<br>समस्याओं के निवारण के लिए सभी सिस्टम इवेंट लॉग करने वाला OS फीचर कौन सा है?',o:['Event Viewer / इवेंट व्यूअर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'mcq',q:'Which OS option configures user account control notifications?<br>यूजर अकाउंट कंट्रोल नोटिफिकेशन कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['UAC Settings / यूजर अकाउंट कंट्रोल सेटिंग्स','User Accounts / यूजर अकाउंट्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature manages system restore point storage location?<br>सिस्टम रिस्टोर पॉइंट स्टोरेज स्थान प्रबंधित करने वाला OS फीचर कौन सा है?',o:['System Restore Settings / सिस्टम रिस्टोर सेटिंग्स','Backup / बैकअप','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option alerts user on low disk space?<br>कम डिस्क स्पेस पर यूजर को अलर्ट करने का OS विकल्प कौन सा है?',o:['Storage Notifications / स्टोरेज नोटिफिकेशन','Task Manager / टास्क मैनेजर','Disk Cleanup / डिस्क क्लीनअप','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Monitoring disk space and system logs prevents unexpected failures.<br>डिस्क स्पेस और सिस्टम लॉग की निगरानी अप्रत्याशित विफलताओं को रोकती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages application compatibility?<br>एप्लिकेशन संगतता प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Compatibility Mode / कंपैटिबिलिटी मोड','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Device Manager / डिवाइस मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option allows running older software on new OS?<br>नए OS पर पुराने सॉफ़्टवेयर चलाने की अनुमति देने का OS विकल्प कौन सा है?',o:['Run in Compatibility Mode / रन इन कंपैटिबिलिटी मोड','Task Manager / टास्क मैनेजर','System Restore / सिस्टम रिस्टोर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature manages system resource allocation?<br>सिस्टम संसाधन आवंटन प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Resource Monitor / रिसोर्स मॉनिटर','Task Manager / टास्क मैनेजर','Performance Monitor / परफॉरमेंस मॉनिटर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option limits CPU usage for specific applications?<br>विशिष्ट एप्लीकेशन के लिए CPU उपयोग सीमित करने का OS विकल्प कौन सा है?',o:['Set Affinity / सेट अफिनिटी','Task Manager / टास्क मैनेजर','Performance Monitor / परफॉरमेंस मॉनिटर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Resource Monitor provides detailed real-time usage of CPU, memory, and disk.<br>रिसोर्स मॉनिटर CPU, मेमोरी और डिस्क का विस्तृत रीयल-टाइम उपयोग दिखाता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages system alerts and warnings?<br>सिस्टम अलर्ट और चेतावनी प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Action Center / एक्शन सेंटर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Notification Settings / नोटिफिकेशन सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option customizes notification sounds?<br>नोटिफिकेशन साउंड कस्टमाइज करने का OS विकल्प कौन सा है?',o:['Sound Settings / साउंड सेटिंग्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Notification Settings / नोटिफिकेशन सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS feature prevents unauthorized application execution?<br>अनधिकृत एप्लीकेशन निष्पादन रोकने वाला OS फीचर कौन सा है?',o:['App Control / ऐप कंट्रोल','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Firewall / फ़ायरवॉल'],a:0},
+ {type:'mcq',q:'Which OS option logs security events for audits?<br>ऑडिट के लिए सुरक्षा इवेंट लॉग करने का OS विकल्प कौन सा है?',o:['Event Viewer Security / इवेंट व्यूअर सिक्योरिटी','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'tf',q:'Security logs help in tracking unauthorized access and breaches.<br>सिक्योरिटी लॉग अनधिकृत एक्सेस और ब्रेच ट्रैक करने में मदद करते हैं।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages user profiles and permissions?<br>यूजर प्रोफाइल और परमिशन्स प्रबंधित करने वाला OS फीचर कौन सा है?',o:['User Accounts / यूजर अकाउंट्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','System Settings / सिस्टम सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option restricts guest user access?<br>गेस्ट यूजर एक्सेस प्रतिबंधित करने का OS विकल्प कौन सा है?',o:['Guest Account Settings / गेस्ट अकाउंट सेटिंग्स','User Accounts / यूजर अकाउंट्स','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS feature manages disk quotas for users?<br>यूजर के लिए डिस्क कोटा प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Disk Quota / डिस्क कोटा','File Explorer / फाइल एक्सप्लोरर','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option notifies when disk space exceeds quota?<br>जब डिस्क स्पेस कोटा से अधिक हो तो नोटिफिकेशन देने का OS विकल्प कौन सा है?',o:['Quota Notification / कोटा नोटिफिकेशन','Disk Cleanup / डिस्क क्लीनअप','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Disk quotas ensure fair resource distribution among multiple users.<br>डिस्क कोटा कई यूजर्स के बीच उचित संसाधन वितरण सुनिश्चित करता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages scheduled maintenance reports?<br>शेड्यूल किए गए मेंटेनेंस रिपोर्ट प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Task Scheduler / टास्क शेड्यूलर','Performance Monitor / परफॉरमेंस मॉनिटर','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option generates detailed performance logs?<br>विस्तृत प्रदर्शन लॉग उत्पन्न करने का OS विकल्प कौन सा है?',o:['Performance Monitor Logs / परफॉरमेंस मॉनिटर लॉग्स','Task Manager / टास्क मैनेजर','Device Manager / डिवाइस मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature alerts when CPU temperature is high?<br>CPU तापमान अधिक होने पर अलर्ट देने वाला OS फीचर कौन सा है?',o:['Hardware Monitor / हार्डवेयर मॉनिटर','Task Manager / टास्क मैनेजर','Performance Monitor / परफॉरमेंस मॉनिटर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option configures automatic log cleanup?<br>स्वचालित लॉग क्लीनअप कॉन्फ़िगर करने का OS विकल्प कौन सा है?',o:['Event Log Cleanup / इवेंट लॉग क्लीनअप','Task Scheduler / टास्क शेड्यूलर','Control Panel / कंट्रोल पैनल','Performance Monitor / परफॉरमेंस मॉनिटर'],a:0},
+ {type:'tf',q:'Automatic log management improves system performance and security.<br>स्वचालित लॉग प्रबंधन सिस्टम प्रदर्शन और सुरक्षा में सुधार करता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages file compression for storage efficiency?<br>स्टोरेज दक्षता के लिए फाइल कम्प्रेशन प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Compression / कम्प्रेशन','Backup / बैकअप','Disk Cleanup / डिस्क क्लीनअप','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option compresses a folder to save disk space?<br>डिस्क स्पेस बचाने के लिए फोल्डर कम्प्रेस करने का OS विकल्प कौन सा है?',o:['Compress Folder / कम्प्रेस फोल्डर','Encrypt Folder / एन्क्रिप्ट फोल्डर','Backup Folder / बैकअप फोल्डर','Delete Folder / डिलीट फोल्डर'],a:0},
+ {type:'mcq',q:'Which OS feature monitors storage device health?<br>स्टोरेज डिवाइस हेल्थ मॉनिटर करने वाला OS फीचर कौन सा है?',o:['Storage Health / स्टोरेज हेल्थ','Disk Cleanup / डिस्क क्लीनअप','Task Manager / टास्क मैनेजर','Device Manager / डिवाइस मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option schedules automatic disk check?<br>स्वचालित डिस्क चेक शेड्यूल करने का OS विकल्प कौन सा है?',o:['Check Disk / चेक डिस्क','Disk Defragmenter / डिस्क डिफ्रैगमेंटर','Task Scheduler / टास्क शेड्यूलर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Disk compression and health monitoring optimize storage performance.<br>डिस्क कम्प्रेशन और हेल्थ मॉनिटरिंग स्टोरेज प्रदर्शन को अनुकूलित करती है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages temporary files to improve speed?<br>स्पीड बढ़ाने के लिए अस्थायी फाइल प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Disk Cleanup / डिस्क क्लीनअप','Task Manager / टास्क मैनेजर','File Explorer / फाइल एक्सप्लोरर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option clears browser cache automatically?<br>ब्राउज़र कैश को स्वचालित रूप से क्लियर करने का OS विकल्प कौन सा है?',o:['Automatic Cleanup / ऑटोमैटिक क्लीनअप','Disk Cleanup / डिस्क क्लीनअप','Task Scheduler / टास्क शेड्यूलर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature monitors real-time application resource usage?<br>रीयल-टाइम में एप्लिकेशन रिसोर्स उपयोग मॉनिटर करने वाला OS फीचर कौन सा है?',o:['Resource Monitor / रिसोर्स मॉनिटर','Task Manager / टास्क मैनेजर','Performance Monitor / परफॉरमेंस मॉनिटर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option sets alerts for high memory usage?<br>उच्च मेमोरी उपयोग पर अलर्ट सेट करने का OS विकल्प कौन सा है?',o:['Memory Alerts / मेमोरी अलर्ट','Task Manager / टास्क मैनेजर','Performance Monitor / परफॉरमेंस मॉनिटर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Clearing temporary files regularly can improve system performance.<br>अस्थायी फाइल को नियमित रूप से क्लियर करने से सिस्टम प्रदर्शन बेहतर होता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages power plans for laptops?<br>लैपटॉप के लिए पावर प्लान प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Power Options / पावर ऑप्शन्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Battery Settings / बैटरी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS option sets sleep and hibernate timings?<br>स्लीप और हाइबरनेट समय सेट करने का OS विकल्प कौन सा है?',o:['Power Plan Settings / पावर प्लान सेटिंग्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल','Battery Settings / बैटरी सेटिंग्स'],a:0},
+ {type:'mcq',q:'Which OS feature monitors battery health and charging cycles?<br>बैटरी हेल्थ और चार्जिंग साइकल मॉनिटर करने वाला OS फीचर कौन सा है?',o:['Battery Monitor / बैटरी मॉनिटर','Power Options / पावर ऑप्शन्स','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option alerts user when battery is low?<br>बैटरी कम होने पर यूजर को अलर्ट देने का OS विकल्प कौन सा है?',o:['Battery Notifications / बैटरी नोटिफिकेशन','Task Manager / टास्क मैनेजर','Power Options / पावर ऑप्शन्स','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Proper power management prolongs battery life and prevents data loss.<br>सही पावर प्रबंधन बैटरी जीवन बढ़ाता है और डेटा हानि को रोकता है।',o:['True / सही','False / गलत'],a:0},
+
+ {type:'mcq',q:'Which OS feature manages scheduled antivirus scans?<br>शेड्यूल किए गए एंटीवायरस स्कैन प्रबंधित करने वाला OS फीचर कौन सा है?',o:['Task Scheduler / टास्क शेड्यूलर','Antivirus / एंटीवायरस','Control Panel / कंट्रोल पैनल','Task Manager / टास्क मैनेजर'],a:0},
+ {type:'mcq',q:'Which OS option alerts user when malware is detected?<br>मैलवेयर मिलने पर यूजर को अलर्ट देने का OS विकल्प कौन सा है?',o:['Security Notifications / सिक्योरिटी नोटिफिकेशन','Task Manager / टास्क मैनेजर','Antivirus / एंटीवायरस','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS feature isolates suspicious applications?<br>संदिग्ध एप्लिकेशन को अलग करने वाला OS फीचर कौन सा है?',o:['Sandboxing / सैंडबॉक्सिंग','Firewall / फ़ायरवॉल','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'mcq',q:'Which OS option schedules automatic malware definition updates?<br>स्वचालित मैलवेयर डेफिनिशन अपडेट शेड्यूल करने का OS विकल्प कौन सा है?',o:['Update Settings / अपडेट सेटिंग्स','Antivirus / एंटीवायरस','Task Manager / टास्क मैनेजर','Control Panel / कंट्रोल पैनल'],a:0},
+ {type:'tf',q:'Regular malware scans and updates protect system from threats.<br>नियमित मैलवेयर स्कैन और अपडेट सिस्टम को खतरों से बचाते हैं।',o:['True / सही','False / गलत'],a:0}
+
+];
+
+
+let index=0;
+let correct=0;
+let wrong=0;
+let attempted=false;
+const qno=document.getElementById('qno');
+const question=document.getElementById('question');
+const options=document.getElementById('options');
+const nextBtn=document.getElementById('next');
+const bar=document.getElementById('bar');
+const quiz=document.getElementById('quiz');
+const result=document.getElementById('result');
+
+function loadQ(){
+ attempted=false;
+ nextBtn.disabled=true;
+ options.innerHTML='';
+ const q=questions[index];
+ qno.innerText=`Question ${index+1} of ${questions.length}`;
+ question.innerHTML=q.q; // HTML used for line break
+ q.o.forEach((op,i)=>{
+  const div=document.createElement('div');
+  div.className='option';
+  div.innerText=op;
+  div.onclick=()=>select(div,i);
+  options.appendChild(div);
+ });
+ bar.style.width=((index)/questions.length*100)+'%';
+}
+
+function select(el,i){
+ if(attempted) return;
+ attempted=true;
+ const q=questions[index];
+ const ops=document.querySelectorAll('.option');
+ ops.forEach(o=>o.classList.add('disabled'));
+ if(i===q.a){
+  el.classList.add('correct');
+  correct++;
+ }else{
+  el.classList.add('wrong');
+  ops[q.a].classList.add('correct');
+  wrong++;
+ }
+ nextBtn.disabled=false;
+}
+
+function nextQ(){
+ index++;
+ if(index<questions.length){
+  loadQ();
+ }else{
+  showResult();
+ }
+}
+
+function showResult(){
+ quiz.style.display='none';
+ bar.style.width='100%';
+ result.style.display='block';
+ const total=questions.length;
+ const score=Math.round((correct/total)*100);
+ result.innerHTML=`
+  <div class="res-card green">Correct : ${correct}</div>
+  <div class="res-card red">Wrong : ${wrong}</div>
+  <div class="res-card purple">Score : ${score}%</div>
+ `;
+}
+
+loadQ();
+</script>
+</body>
+</html>
